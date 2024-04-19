@@ -6,8 +6,7 @@
         {
           checked: checked,
         },
-      ]"
-    >
+      ]">
       <view :class="`${prefixCls}-text-checked`">
         <text v-if="checkedText">
           {{ checkedText }}
@@ -24,7 +23,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   /**
@@ -47,7 +46,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: "#165DFF",
+    default: '#165DFF',
   },
 
   /**
@@ -56,7 +55,7 @@ const props = defineProps({
    */
   size: {
     type: String,
-    default: "medium",
+    default: 'medium',
   },
   /**
    * 激活文字
@@ -76,7 +75,7 @@ const props = defineProps({
    */
   shape: {
     type: String,
-    default: "round",
+    default: 'round',
   },
   /**
    * 切换前
@@ -84,61 +83,61 @@ const props = defineProps({
   beforeChange: {
     type: Function,
   },
-});
+})
 
-const prefixCls = "iui-switch";
+const prefixCls = 'dui-switch'
 const cls = computed(() => [
   prefixCls,
   `${prefixCls}-${props.shape}`,
   {
     [`${prefixCls}-disabled`]: props.disabled,
   },
-]);
+])
 
-const checked = ref(props.modelValue);
+const checked = ref(props.modelValue)
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const handleChange = async () => {
   if (props.disabled) {
-    return;
+    return
   }
 
   const done = () => {
-    checked.value = !checked.value;
-    emit("update:modelValue", checked.value);
-    emit("change", checked.value);
-  };
+    checked.value = !checked.value
+    emit('update:modelValue', checked.value)
+    emit('change', checked.value)
+  }
 
   if (props.beforeChange) {
-    await props.beforeChange(!checked.value, done);
+    await props.beforeChange(!checked.value, done)
   } else {
-    done();
+    done()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-switch {
+@import '../../style/index.scss';
+.dui-switch {
   display: inline-block;
   transition: all 200ms ease-in-out;
 
   &-square {
-    .iui-switch-container {
+    .dui-switch-container {
       border-radius: $border-radius-small;
       height: $size-6;
       min-width: $size-12;
 
       &.checked {
-        .iui-switch-trigger {
+        .dui-switch-trigger {
           left: calc(100% - 2px - #{$size-5});
           height: $size-5;
           width: $size-5;
         }
       }
     }
-    .iui-switch-trigger {
+    .dui-switch-trigger {
       border-radius: $border-radius-small;
       height: $size-5;
       width: $size-5;
@@ -160,7 +159,7 @@ const handleChange = async () => {
     &.checked {
       background: v-bind(color);
 
-      .iui-switch-trigger {
+      .dui-switch-trigger {
         left: calc(100% - 2px - #{$size-6});
         width: $size-6;
         height: $size-6;

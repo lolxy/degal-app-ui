@@ -8,8 +8,7 @@
         paddingTop: title ? '6px' : 0,
         paddingBottom: extra ? '6px' : 0,
         ...valueStyle,
-      }"
-    >
+      }">
       <template v-if="$slots.prefix">
         <view :class="`${prefixCls}-value-prefix`">
           <slot name="prefix" />
@@ -27,8 +26,8 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { isNumber } from "../../helper/is";
+import { computed } from 'vue'
+import { isNumber } from '../../helper/is'
 
 /**
  * 统计数值
@@ -78,39 +77,39 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
-});
+})
 
-const prefixCls = "iui-statistic";
+const prefixCls = 'dui-statistic'
 
-const cls = computed(() => [prefixCls]);
+const cls = computed(() => [prefixCls])
 
 const numberValue = computed(() => {
   if (isNumber(props.value)) {
-    return props.value;
+    return props.value
   }
-  return 0;
-});
+  return 0
+})
 
 const formatValue = computed(() => {
-  let value = numberValue.value;
+  let value = numberValue.value
 
   // 添加精度
   if (props.precision) {
-    value = value.toFixed(props.precision);
+    value = value.toFixed(props.precision)
   }
 
   // 添加分隔符
   if (props.separator) {
-    value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
-  return value;
-});
+  return value
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-statistic {
+@import '../../style/index.scss';
+.dui-statistic {
   &-title {
     font-size: $font-size-small;
     color: $color-text-light;

@@ -15,31 +15,23 @@
       :style="{
         height: `${height}px`,
       }"
-      @change="handleChange"
-    >
+      @change="handleChange">
       <block v-for="(img, idx) in list" :key="idx">
         <swiper-item
           :class="[`${prefixCls}-item`]"
           :style="{
             padding: !zoom && margin ? `0 ${margin / 2}px` : 0,
             width: `${width}%`,
-          }"
-        >
+          }">
           <view
             :class="[
               `${prefixCls}-item-image`,
               {
                 zoom: zoom && innerCurrent !== idx,
               },
-            ]"
-          >
+            ]">
             <view style="width: 100%; height: 100%">
-              <iui-image
-                mode="aspectFill"
-                lazy-load
-                :src="img"
-                :radius="radius"
-              />
+              <dui-image mode="aspectFill" lazy-load :src="img" :radius="radius" />
             </view>
           </view>
         </swiper-item>
@@ -52,25 +44,21 @@
       v-else
       :class="`${prefixCls}-indicator`"
       :style="{
-        justifyContent:
-          indicatorAlign === 'center' ? 'center' : `flex-${indicatorAlign}`,
-      }"
-    >
+        justifyContent: indicatorAlign === 'center' ? 'center' : `flex-${indicatorAlign}`,
+      }">
       <block v-for="(_, idx) in list.length" :key="idx">
         <view
           class="dots"
           :style="{
-            backgroundColor:
-              innerCurrent === idx ? indicatorActiveColor : indicatorColor,
-          }"
-        ></view>
+            backgroundColor: innerCurrent === idx ? indicatorActiveColor : indicatorColor,
+          }"></view>
       </block>
     </view>
   </view>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   /**
@@ -100,21 +88,21 @@ const props = defineProps({
    */
   indicatorType: {
     type: String,
-    default: "dot",
+    default: 'dot',
   },
   /**
    * 指示点颜色
    */
   indicatorColor: {
     type: String,
-    default: "rgba(255, 255, 255, 0.4)",
+    default: 'rgba(255, 255, 255, 0.4)',
   },
   /**
    * 激活指示点颜色
    */
   indicatorActiveColor: {
     type: String,
-    default: "#FFFFFF",
+    default: '#FFFFFF',
   },
   /**
    * 是否自动播放
@@ -142,7 +130,7 @@ const props = defineProps({
    */
   direction: {
     type: String,
-    default: "horizontal",
+    default: 'horizontal',
   },
   /**
    * 高度
@@ -179,7 +167,7 @@ const props = defineProps({
    */
   indicatorAlign: {
     type: String,
-    default: "center",
+    default: 'center',
   },
   /**
    * 圆角
@@ -188,30 +176,30 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-});
+})
 
-const prefixCls = "iui-swiper";
+const prefixCls = 'dui-swiper'
 
 const cls = computed(() => [
   prefixCls,
   `${prefixCls}-indicator-${props.indicatorType}`,
   `${prefixCls}-${props.direction}`,
-]);
+])
 
-const innerCurrent = ref(props.modelValue);
+const innerCurrent = ref(props.modelValue)
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const handleChange = (e) => {
-  innerCurrent.value = e.detail.current;
-  emit("update:modelValue", e.detail.current);
-  emit("change", e);
-};
+  innerCurrent.value = e.detail.current
+  emit('update:modelValue', e.detail.current)
+  emit('change', e)
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-swiper {
+@import '../../style/index.scss';
+.dui-swiper {
   position: relative;
 
   &-item {
@@ -245,7 +233,7 @@ const handleChange = (e) => {
     box-sizing: border-box;
     padding: 0 10px;
 
-    .iui-swiper-vertical & {
+    .dui-swiper-vertical & {
       right: 0;
       left: auto;
       bottom: auto;
@@ -262,18 +250,18 @@ const handleChange = (e) => {
       border-radius: 50%;
       transition: all 0.2s ease-in-out;
       &:not(:last-child) {
-        .iui-swiper-vertical & {
+        .dui-swiper-vertical & {
           margin-bottom: 8px;
         }
 
-        .iui-swiper-horizontal & {
+        .dui-swiper-horizontal & {
           margin-right: 8px;
         }
       }
     }
 
     &-line {
-      &.iui-swiper-horizontal {
+      &.dui-swiper-horizontal {
         .dots {
           width: 12px;
           height: 3px;
@@ -281,7 +269,7 @@ const handleChange = (e) => {
         }
       }
 
-      &.iui-swiper-vertical {
+      &.dui-swiper-vertical {
         .dots {
           width: 3px;
           height: 12px;

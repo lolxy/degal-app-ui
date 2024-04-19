@@ -1,23 +1,23 @@
 {
-  "name": "iui-design",
-  "version": "1.0.0-alpha.5",
+  "name": "@degal/degal-app-ui",
+  "version": "1.0.0",
   "description": "A uni-app UI components library",
   "keywords": [
     "uniapp",
     "UI",
     "components",
-    "iui-design",
-    "iui",
+    "degal-app-ui",
+    "dui",
     "vue"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yuncishuzi/iui-design.git"
+    "url": "git+https://github.com/lolxy/app-degal-ui.git"
   },
-  "author": "Nobu121",
+  "author": "lolxy",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/yuncishuzi/iui-design/issues"
+    "url": "https://github.com/lolxy/app-degal-ui/issues"
   },
-  "homepage": "https://github.com/yuncishuzi/iui-design#readme"
+  "homepage": "https://github.com/lolxy/app-degal-ui#readme"
 }

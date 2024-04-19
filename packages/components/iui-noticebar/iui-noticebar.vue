@@ -2,27 +2,21 @@
   <view :class="cls" v-if="visible">
     <view :class="`${prefixCls}-prefix`" v-if="$slots.prefix || icon">
       <slot name="prefix" />
-      <iui-icon :name="icon" size="18" v-if="icon" />
+      <dui-icon :name="icon" size="18" v-if="icon" />
     </view>
     <view :class="`${prefixCls}-content`">
-      <view
-        :class="`${prefixCls}-content-gradient left`"
-        v-if="animation"
-      ></view>
+      <view :class="`${prefixCls}-content-gradient left`" v-if="animation"></view>
       <view :class="`${prefixCls}-content-inner`">
         <view :class="`${prefixCls}-content-text`" :style="[animationStyle]">
           <slot />
         </view>
       </view>
-      <view
-        :class="`${prefixCls}-content-gradient right`"
-        v-if="animation"
-      ></view>
+      <view :class="`${prefixCls}-content-gradient right`" v-if="animation"></view>
     </view>
     <view :class="`${prefixCls}-suffix`" v-if="$slots.suffix || closeable">
       <slot name="suffix" />
 
-      <iui-icon name="close" size="18" v-if="closeable" @click="handleClose" />
+      <dui-icon name="close" size="18" v-if="closeable" @click="handleClose" />
     </view>
   </view>
 </template>
@@ -30,9 +24,9 @@
 <script setup>
 // TODO:ios 浏览器 inline-block 会使文字放大，暂时未找到原因
 
-import { computed, getCurrentInstance, onMounted, ref } from "vue";
-import { getRect } from "../../helper/rect";
-import { isObject } from "../../helper/is";
+import { computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { getRect } from '../../helper/rect'
+import { isObject } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -71,7 +65,7 @@ const props = defineProps({
    */
   color: {
     type: [String, Object],
-    default: "warning",
+    default: 'warning',
   },
   /**
    * 滚动动画
@@ -87,69 +81,69 @@ const props = defineProps({
     type: Number,
     default: 40,
   },
-});
+})
 
-const prefixCls = "iui-noticebar";
+const prefixCls = 'dui-noticebar'
 
 const colorIsPreset = computed(() => {
   if (isObject(props.color)) {
-    return false;
+    return false
   }
 
-  return ["primary", "success", "warning", "danger"].includes(props.color);
-});
+  return ['primary', 'success', 'warning', 'danger'].includes(props.color)
+})
 
 const cls = computed(() => [
   prefixCls,
-  `${prefixCls}-${colorIsPreset.value ? props.color : "custom"}`,
+  `${prefixCls}-${colorIsPreset.value ? props.color : 'custom'}`,
   {
     [`${prefixCls}-wrapable`]: props.wrapable,
     [`${prefixCls}-animation`]: props.animation,
   },
-]);
+])
 
-const visible = ref(props.visible);
+const visible = ref(props.visible)
 
-const emit = defineEmits(["update:visible", "close"]);
+const emit = defineEmits(['update:visible', 'close'])
 
 const handleClose = () => {
-  visible.value = false;
-  emit("update:visible", false);
-  emit("close");
-};
+  visible.value = false
+  emit('update:visible', false)
+  emit('close')
+}
 
-const instance = getCurrentInstance();
+const instance = getCurrentInstance()
 
 const getAnimationStyle = () => {
   return new Promise((resolve) => {
     getRect(instance, `.${prefixCls}-content-text`).then((res) => {
-      const { width } = res;
-      const { windowWidth } = uni.getSystemInfoSync();
+      const { width } = res
+      const { windowWidth } = uni.getSystemInfoSync()
 
-      const duration = parseInt(width / props.speed);
+      const duration = parseInt(width / props.speed)
 
       resolve({
         animationDuration: `${duration}s`,
         paddingLeft: `${windowWidth}px`,
-      });
-    });
-  });
-};
+      })
+    })
+  })
+}
 
-const animationStyle = ref({});
+const animationStyle = ref({})
 
 onMounted(async () => {
   if (props.animation) {
-    animationStyle.value = await getAnimationStyle();
+    animationStyle.value = await getAnimationStyle()
   }
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
 @mixin gradientColor($color) {
-  .iui-noticebar-content-gradient {
+  .dui-noticebar-content-gradient {
     &.left {
       background: linear-gradient(to right, $color, rgba(255, 236, 232, 0));
     }
@@ -160,7 +154,7 @@ onMounted(async () => {
   }
 }
 
-.iui-noticebar {
+.dui-noticebar {
   font-size: $font-size-medium;
   padding: 0 $size-4;
   display: flex;
@@ -170,7 +164,7 @@ onMounted(async () => {
   box-sizing: border-box;
   border-radius: inherit;
 
-  &.iui-noticebar-wrapable {
+  &.dui-noticebar-wrapable {
     align-items: flex-start;
   }
 
@@ -197,26 +191,18 @@ onMounted(async () => {
       z-index: 99;
       &.left {
         left: 0;
-        background: linear-gradient(
-          to right,
-          v-bind(color),
-          rgba(255, 236, 232, 0)
-        );
+        background: linear-gradient(to right, v-bind(color), rgba(255, 236, 232, 0));
       }
 
       &.right {
         right: 0;
-        background: linear-gradient(
-          to left,
-          v-bind(color),
-          rgb(255, 236, 232, 0)
-        );
+        background: linear-gradient(to left, v-bind(color), rgb(255, 236, 232, 0));
       }
     }
 
     &-text {
       display: block;
-      .iui-noticebar-animation & {
+      .dui-noticebar-animation & {
         display: inline-block;
         animation: marquee linear infinite;
       }
@@ -236,11 +222,11 @@ onMounted(async () => {
       position: relative;
       word-break: break-all;
 
-      .iui-noticebar-animation & {
+      .dui-noticebar-animation & {
         white-space: nowrap;
       }
 
-      .iui-noticebar-wrapable & {
+      .dui-noticebar-wrapable & {
         display: block;
         line-height: 20px;
         padding: $size-2 0;
@@ -251,8 +237,8 @@ onMounted(async () => {
   }
 
   &-custom {
-    background-color: v-bind("color.background");
-    color: v-bind("color.color");
+    background-color: v-bind('color.background');
+    color: v-bind('color.color');
   }
 
   &-primary {

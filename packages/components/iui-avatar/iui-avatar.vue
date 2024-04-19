@@ -4,48 +4,23 @@
       <view :class="`${prefixCls}-icon-text`" v-if="$slots.default && !src">
         <slot />
       </view>
-      <image
-        v-else-if="!src"
-        :class="`${prefixCls}-icon-default`"
-        :src="defaultImage"
-        mode="scaleToFill"
-      />
-      <image
-        v-else
-        :class="`${prefixCls}-icon-image`"
-        :src="src"
-        mode="scaleToFill"
-      />
+      <image v-else-if="!src" :class="`${prefixCls}-icon-default`" :src="defaultImage" mode="scaleToFill" />
+      <image v-else :class="`${prefixCls}-icon-image`" :src="src" mode="scaleToFill" />
     </view>
     <view
-      v-if="
-        avatarName ||
-        avatarDesc ||
-        $slots.avatarName ||
-        $slots.avatarDesc ||
-        $slots.extra
-      "
-      :class="`${prefixCls}-info-container`"
-    >
+      v-if="avatarName || avatarDesc || $slots.avatarName || $slots.avatarDesc || $slots.extra"
+      :class="`${prefixCls}-info-container`">
       <view :class="`${prefixCls}-text`">
         <view
           v-if="avatarName || $slots.avatarName"
           :class="`${prefixCls}-text-name`"
           :style="{
-            fontSize: autoSize
-              ? isNumber(size)
-                ? `${size / 2.5}px`
-                : size
-              : '',
-          }"
-        >
+            fontSize: autoSize ? (isNumber(size) ? `${size / 2.5}px` : size) : '',
+          }">
           <slot name="avatarName" v-if="$slots.avatarName" />
           <text v-else>{{ avatarName }}</text>
         </view>
-        <view
-          v-if="avatarDesc || $slots.avatarDesc"
-          :class="`${prefixCls}-text-desc`"
-        >
+        <view v-if="avatarDesc || $slots.avatarDesc" :class="`${prefixCls}-text-desc`">
           <slot name="avatarDesc" v-if="$slots.avatarDesc" />
           <text v-else>{{ avatarDesc }}</text>
         </view>
@@ -61,9 +36,9 @@
 // TODO:
 // 角标
 // 图标头像
-import { computed } from "vue";
-import DefaultImage from "./assets/default.js";
-import { isNumber, isString } from "../../helper/is";
+import { computed } from 'vue'
+import DefaultImage from './assets/default.js'
+import { isNumber, isString } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -72,7 +47,7 @@ const props = defineProps({
    */
   shape: {
     type: String,
-    default: "circle",
+    default: 'circle',
   },
   /**
    * 头像大小
@@ -89,14 +64,14 @@ const props = defineProps({
    */
   src: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 背景颜色
    */
   bgColor: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 默认图标
@@ -112,7 +87,7 @@ const props = defineProps({
    */
   avatarName: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 头像描述
@@ -120,7 +95,7 @@ const props = defineProps({
    */
   avatarDesc: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 文字自适应大小
@@ -136,58 +111,55 @@ const props = defineProps({
    */
   align: {
     type: String,
-    default: "center",
+    default: 'center',
   },
-});
+})
 
-const prefixCls = "iui-avatar";
+const prefixCls = 'dui-avatar'
 
-const cls = computed(() => [
-  prefixCls,
-  [`${prefixCls}-${props.shape}`, `${prefixCls}-${props.size}`],
-]);
+const cls = computed(() => [prefixCls, [`${prefixCls}-${props.shape}`, `${prefixCls}-${props.size}`]])
 
 const getSize = (size) => {
   if (isNumber(size)) {
-    return size;
+    return size
   }
   switch (size) {
-    case "mini":
-      return 24;
-    case "small":
-      return 32;
-    case "medium":
-      return 40;
-    case "large":
-      return 48;
-    case "huge":
-      return 56;
+    case 'mini':
+      return 24
+    case 'small':
+      return 32
+    case 'medium':
+      return 40
+    case 'large':
+      return 48
+    case 'huge':
+      return 56
     default:
-      return size;
+      return size
   }
-};
+}
 
 const avatarSize = computed(() => {
-  let size = getSize(props.size);
+  let size = getSize(props.size)
 
-  size = isString(size) ? size : size + "px";
+  size = isString(size) ? size : size + 'px'
 
   return {
     width: size,
     height: size,
-  };
-});
+  }
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
-.iui-avatar-wrapper {
+.dui-avatar-wrapper {
   display: flex;
   align-items: v-bind(align);
   justify-content: space-between;
 
-  .iui-avatar {
+  .dui-avatar {
     width: $icon-medium;
     height: $icon-medium;
     background-color: $color-bg-active;
@@ -232,13 +204,13 @@ const avatarSize = computed(() => {
     }
   }
 
-  .iui-avatar-info-container {
+  .dui-avatar-info-container {
     margin-left: $size-4;
     display: flex;
     justify-content: space-between;
     align-items: v-bind(align);
     width: 100%;
-    .iui-avatar-text {
+    .dui-avatar-text {
       &-name {
         font-size: $font-size-medium;
         color: $color-text;
@@ -250,7 +222,7 @@ const avatarSize = computed(() => {
       }
     }
 
-    .iui-avatar-extra {
+    .dui-avatar-extra {
       margin-left: $size-4;
     }
   }

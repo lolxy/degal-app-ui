@@ -1,10 +1,5 @@
 <template>
-  <view
-    :class="cls"
-    @mousedown="onTouchStart"
-    @mousemove="onTouchMove"
-    @mouseup="onTouchEnd"
-  >
+  <view :class="cls" @mousedown="onTouchStart" @mousemove="onTouchMove" @mouseup="onTouchEnd">
     <view :class="`${prefixCls}-prefix`" v-if="$slots.prefix">
       <slot name="prefix" />
     </view>
@@ -16,15 +11,13 @@
         }"
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
-        @touchend="onTouchEnd"
-      >
+        @touchend="onTouchEnd">
         <view
           :class="`${prefixCls}-popover`"
           :style="{
             opacity: popover === 'always' ? 1 : showPopover ? 1 : 0,
           }"
-          v-if="popover"
-        >
+          v-if="popover">
           {{ innerValue }} {{ unit }}
         </view>
         <view :class="`${prefixCls}-thumb-wrapper`">
@@ -37,8 +30,7 @@
         :class="`${prefixCls}-active`"
         :style="{
           width: `${left}px`,
-        }"
-      ></view>
+        }"></view>
     </view>
     <view :class="`${prefixCls}-suffix`" v-if="$slots.suffix">
       <slot name="suffix" />
@@ -47,8 +39,8 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, onMounted, ref } from "vue";
-import { getRect } from "../../helper/rect";
+import { computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { getRect } from '../../helper/rect'
 
 const props = defineProps({
   /**
@@ -102,14 +94,14 @@ const props = defineProps({
    */
   lineColor: {
     type: String,
-    default: "var(--iui-bg-light)",
+    default: 'var(--dui-bg-light)',
   },
   /**
    * 激活条颜色
    */
   activeColor: {
     type: String,
-    default: "#165DFF",
+    default: '#165DFF',
   },
   /**
    * 线条粗细
@@ -118,88 +110,87 @@ const props = defineProps({
     type: Number,
     default: 2,
   },
-});
+})
 
-const instance = getCurrentInstance();
+const instance = getCurrentInstance()
 
-const prefixCls = "iui-slider";
+const prefixCls = 'dui-slider'
 
 const cls = computed(() => [
   prefixCls,
   {
     [`${prefixCls}-disabled`]: props.disabled,
   },
-]);
+])
 
 // 滑块的宽度
-const lineWidth = ref(0);
-const lineLeft = ref(0);
+const lineWidth = ref(0)
+const lineLeft = ref(0)
 
 const innerValue = computed(() => {
-  return Number(((left.value / lineWidth.value) * props.max).toFixed(0));
-});
+  return Number(((left.value / lineWidth.value) * props.max).toFixed(0))
+})
 
 // 滑块距离左边的距离
-const left = ref(0);
+const left = ref(0)
 
-const emit = defineEmits(["update:modelValue", "changing", "change"]);
+const emit = defineEmits(['update:modelValue', 'changing', 'change'])
 
-const showPopover = ref(false);
+const showPopover = ref(false)
 
 // 是否开始滑动
-const start = ref(false);
+const start = ref(false)
 
 const onTouchStart = () => {
-  if (props.disabled) return;
-  start.value = true;
-  showPopover.value = true;
-};
+  if (props.disabled) return
+  start.value = true
+  showPopover.value = true
+}
 
 const onTouchEnd = () => {
-  console.log(start.value);
-  if (props.disabled) return;
-  start.value = false;
-  showPopover.value = false;
-  emit("update:modelValue", innerValue.value);
-  emit("change", innerValue.value);
-};
+  console.log(start.value)
+  if (props.disabled) return
+  start.value = false
+  showPopover.value = false
+  emit('update:modelValue', innerValue.value)
+  emit('change', innerValue.value)
+}
 
 const onTouchMove = (e) => {
-  if (props.disabled || !start.value) return;
+  if (props.disabled || !start.value) return
 
-  const x = e.touches[0].pageX.toFixed(0) - lineLeft.value;
+  const x = e.touches[0].pageX.toFixed(0) - lineLeft.value
 
   if (x < 0) {
-    left.value = 0;
-    return;
+    left.value = 0
+    return
   } else if (x > lineWidth.value) {
-    left.value = lineWidth.value;
-    return;
+    left.value = lineWidth.value
+    return
   }
-  emit("changing", innerValue.value);
+  emit('changing', innerValue.value)
   if (props.step === 1) {
-    left.value = x;
-    return;
+    left.value = x
+    return
   }
   // 计算步长
-  const step =
-    Math.round(((x / lineWidth.value) * props.max) / props.step) * props.step;
+  const step = Math.round(((x / lineWidth.value) * props.max) / props.step) * props.step
 
-  left.value = (step / props.max) * lineWidth.value;
-};
+  left.value = (step / props.max) * lineWidth.value
+}
 
 onMounted(() => {
-  getRect(instance, "#line").then((rect) => {
-    lineWidth.value = rect.width;
-    lineLeft.value = rect.left;
-    left.value = (props.modelValue / props.max) * lineWidth.value;
-  });
-});
+  getRect(instance, '#line').then((rect) => {
+    lineWidth.value = rect.width
+    lineLeft.value = rect.left
+    left.value = (props.modelValue / props.max) * lineWidth.value
+  })
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-slider {
+@import '../../style/index.scss';
+.dui-slider {
   padding: $size-3 $size-4;
   touch-action: none;
   display: flex;
@@ -259,7 +250,7 @@ onMounted(() => {
     pointer-events: none;
 
     &:after {
-      content: " ";
+      content: ' ';
       background-color: inherit;
       position: absolute;
       width: 8px;

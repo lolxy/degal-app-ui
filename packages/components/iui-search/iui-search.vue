@@ -7,7 +7,7 @@
 
       <view :class="`${prefixCls}-input-wrap`">
         <view :class="`${prefixCls}-icon`" v-if="icon">
-          <iui-icon :name="icon"></iui-icon>
+          <dui-icon :name="icon"></dui-icon>
         </view>
 
         <input
@@ -19,8 +19,7 @@
           @blur="onBlur"
           @input="handleInput"
           @enter="handleSearch"
-          type="text"
-        />
+          type="text" />
       </view>
 
       <view :class="`${prefixCls}-suffix`" v-if="isFocus || $slots.suffix">
@@ -37,7 +36,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   /**
@@ -45,14 +44,14 @@ const props = defineProps({
    */
   modelValue: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 占位符
    */
   placeholder: {
     type: String,
-    default: "请输入要查询的内容",
+    default: '请输入要查询的内容',
   },
   /**
    * 图标
@@ -61,21 +60,21 @@ const props = defineProps({
    */
   icon: {
     type: [String, Boolean],
-    default: "search",
+    default: 'search',
   },
   /**
    * 背景颜色
    */
   bgColor: {
     type: String,
-    default: "var(--iui-bg)",
+    default: 'var(--dui-bg)',
   },
   /**
    * 取消文字颜色
    */
   color: {
     type: String,
-    default: "#165DFF",
+    default: '#165DFF',
   },
   /**
    * 是否显示取消按钮
@@ -84,43 +83,43 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-});
+})
 
-const innerValue = ref("");
+const innerValue = ref('')
 
-const prefixCls = "iui-search";
-const cls = computed(() => [prefixCls]);
+const prefixCls = 'dui-search'
+const cls = computed(() => [prefixCls])
 
-const emit = defineEmits(["update:modelValue", "search"]);
+const emit = defineEmits(['update:modelValue', 'search'])
 
-const isFocus = ref(false);
+const isFocus = ref(false)
 
 const onBlur = () => {
   setTimeout(() => {
-    isFocus.value = false;
-  }, 50);
-};
+    isFocus.value = false
+  }, 50)
+}
 
 const handleSearch = () => {
-  emit("search", innerValue.value);
-};
+  emit('search', innerValue.value)
+}
 
 const handleInput = (e) => {
-  innerValue.value = e.detail.value;
-  emit("update:modelValue", e.detail.value);
-};
+  innerValue.value = e.detail.value
+  emit('update:modelValue', e.detail.value)
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-search {
+@import '../../style/index.scss';
+.dui-search {
   &-container {
     height: $size-10;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: $size-4;
-    background: v-bind("props.bgColor");
+    background: v-bind('props.bgColor');
   }
 
   &-input-wrap {
@@ -171,7 +170,7 @@ const handleInput = (e) => {
 </style>
 
 <style>
-.iui-search-placeholder {
+.dui-search-placeholder {
   color: #a9aeb8;
   font-size: 15px;
 }

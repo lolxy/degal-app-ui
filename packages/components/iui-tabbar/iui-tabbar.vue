@@ -2,37 +2,28 @@
   <view :class="cls">
     <block v-for="(tab, idx) in list" :key="idx">
       <view
-        :class="[
-          `${prefixCls}-item`,
-          { active: tab.name === innerValue || idx === innerValue },
-        ]"
-        @click="handleChange(tab, idx)"
-      >
-        <iui-badge v-bind="tab.badge" :position="[30, 0]">
+        :class="[`${prefixCls}-item`, { active: tab.name === innerValue || idx === innerValue }]"
+        @click="handleChange(tab, idx)">
+        <dui-badge v-bind="tab.badge" :position="[30, 0]">
           <view class="tab" v-if="!$slots[tab.name]">
-            <view
-              :class="[`${prefixCls}-icon`, { 'icon-only': !tab.name }]"
-              v-if="tab.icon"
-            >
-              <iui-icon :name="tab.icon"></iui-icon>
+            <view :class="[`${prefixCls}-icon`, { 'icon-only': !tab.name }]" v-if="tab.icon">
+              <dui-icon :name="tab.icon"></dui-icon>
             </view>
-            <view
-              :class="[`${prefixCls}-name`, { 'name-only': !tab.icon }]"
-              v-if="!capsule && tab.name"
-              >{{ tab.name }}</view
-            >
+            <view :class="[`${prefixCls}-name`, { 'name-only': !tab.icon }]" v-if="!capsule && tab.name">{{
+              tab.name
+            }}</view>
           </view>
           <view class="tab" v-else>
             <slot :name="tab.name"></slot>
           </view>
-        </iui-badge>
+        </dui-badge>
       </view>
     </block>
   </view>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   /**
@@ -56,7 +47,7 @@ const props = defineProps({
    */
   activeColor: {
     type: String,
-    default: "#165DFF",
+    default: '#165DFF',
   },
   /**
    * 悬浮胶囊
@@ -65,33 +56,33 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
-const prefixCls = "iui-tabbar";
+})
+const prefixCls = 'dui-tabbar'
 const cls = computed(() => [
   prefixCls,
   {
     [`${prefixCls}-capsule`]: props.capsule,
   },
-]);
+])
 
-const innerValue = ref(props.current);
+const innerValue = ref(props.current)
 
-const emit = defineEmits(["change"]);
+const emit = defineEmits(['change'])
 
 const handleChange = (tab, idx) => {
-  innerValue.value = tab.name || idx;
-  emit("change", tab.name || idx);
-};
+  innerValue.value = tab.name || idx
+  emit('change', tab.name || idx)
+}
 
 const capsuleBackground = computed(() => {
-  if (!props.capsule) return;
+  if (!props.capsule) return
 
-  return props.activeColor + "1A";
-});
+  return props.activeColor + '1A'
+})
 </script>
 
 <style lang="scss" scoped>
-.iui-tabbar {
+.dui-tabbar {
   display: flex;
   align-items: stretch;
   width: 100%;
@@ -106,11 +97,11 @@ const capsuleBackground = computed(() => {
     box-sizing: border-box;
     min-height: 54px;
     padding: 8px;
-    .iui-tabbar-icon {
+    .dui-tabbar-icon {
       margin: 0;
     }
 
-    .iui-tabbar-item {
+    .dui-tabbar-item {
       &.active {
         border-radius: 36px;
         background: v-bind(capsuleBackground);

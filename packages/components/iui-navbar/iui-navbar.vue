@@ -3,13 +3,8 @@
     :class="`${prefixCls}-wrapper`"
     :style="{
       paddingBottom: safeAreaTop,
-    }"
-  >
-    <view
-      :class="`${prefixCls}-status-bar`"
-      :style="statusBarStyle"
-      v-if="!hideStatusBar"
-    ></view>
+    }">
+    <view :class="`${prefixCls}-status-bar`" :style="statusBarStyle" v-if="!hideStatusBar"></view>
 
     <view :class="cls" :style="customStyle">
       <view :class="`${prefixCls}-content`" :style="contentStyle">
@@ -17,28 +12,21 @@
           :class="`${prefixCls}-content-left`"
           :style="{
             width: title ? '88px' : '100%',
-          }"
-        >
-          <view
-            v-if="back && !$slots.left"
-            class="back"
-            @click="handleBackClick"
-          >
-            <iui-icon name="left" />
+          }">
+          <view v-if="back && !$slots.left" class="back" @click="handleBackClick">
+            <dui-icon name="left" />
           </view>
 
           <slot name="left" v-if="$slots.left" />
         </view>
-        <view :class="`${prefixCls}-content-title`" v-if="title">
-          {{ title }}</view
-        >
+        <view :class="`${prefixCls}-content-title`" v-if="title"> {{ title }}</view>
       </view>
     </view>
   </view>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   /**
@@ -46,7 +34,7 @@ const props = defineProps({
    */
   title: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 样式
@@ -80,7 +68,7 @@ const props = defineProps({
    */
   statusBarColor: {
     type: String,
-    default: "transparent",
+    default: 'transparent',
   },
   /**
    * 不显示状态栏
@@ -97,9 +85,9 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-});
+})
 
-const prefixCls = "iui-navbar";
+const prefixCls = 'dui-navbar'
 
 const cls = computed(() => [
   prefixCls,
@@ -107,64 +95,64 @@ const cls = computed(() => [
     [`${prefixCls}-fixed`]: props.fixed,
     [`${prefixCls}-split`]: props.split,
   },
-]);
+])
 
-const statusBarHeight = ref(0);
+const statusBarHeight = ref(0)
 
 // #ifdef MP
-statusBarHeight.value = uni.getSystemInfoSync().statusBarHeight;
+statusBarHeight.value = uni.getSystemInfoSync().statusBarHeight
 // #endif
 
 // 状态栏高度
 const statusBarStyle = computed(() => {
-  const { statusBarHeight } = uni.getSystemInfoSync();
+  const { statusBarHeight } = uni.getSystemInfoSync()
   return {
     height: `${statusBarHeight}px`,
     backgroundColor: props.statusBarColor,
-  };
-});
+  }
+})
 
 // 顶部安全区域
 const safeAreaTop = computed(() => {
   if (props.fixed) {
-    return `${statusBarHeight.value + 48}px`;
+    return `${statusBarHeight.value + 48}px`
   }
-});
+})
 
 // 内容样式
 const contentStyle = computed(() => {
-  const style = {};
+  const style = {}
 
   if (props.fixed && props.hideStatusBar) {
-    style.paddingTop = `${statusBarHeight.value}px`;
+    style.paddingTop = `${statusBarHeight.value}px`
   }
 
-  return style;
-});
+  return style
+})
 
 const handleBackClick = async () => {
   const done = () => {
-    uni.navigateBack({ delta: 1 });
-  };
+    uni.navigateBack({ delta: 1 })
+  }
 
   if (props.beforeBack) {
-    await props.beforeBack(done);
+    await props.beforeBack(done)
   } else {
-    done();
+    done()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
-.iui-navbar-wrapper {
+.dui-navbar-wrapper {
   width: 100%;
   position: relative;
   overflow: hidden;
 }
 
-.iui-navbar {
+.dui-navbar {
   display: flex;
   width: 100%;
   background-color: $color-bg;

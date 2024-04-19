@@ -2,25 +2,25 @@
   <view :class="cls" @click.stop="handleTagClick" v-if="visible">
     <view :class="`${prefixCls}-icon`" v-if="icon || $slots.icon">
       <slot name="icon" v-if="$slots.icon" />
-      <iui-icon :name="icon" v-else />
+      <dui-icon :name="icon" v-else />
     </view>
     <slot />
 
     <view style="padding-left: 4px" @click.stop="handleTagClose">
-      <iui-icon v-if="closeable" name="close" />
+      <dui-icon v-if="closeable" name="close" />
     </view>
   </view>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref } from 'vue'
 const props = defineProps({
   /**
    * 大小
    */
   size: {
     type: String,
-    default: "medium",
+    default: 'medium',
   },
   /**
    * 图标
@@ -62,17 +62,17 @@ const props = defineProps({
    */
   checkedColor: {
     type: String,
-    default: "var(--iui-primary-6)",
+    default: 'var(--dui-primary-6)',
   },
-});
+})
 
 // 可见
-const visible = ref(true);
+const visible = ref(true)
 
 // 选中
-const checked = ref(props.checked);
+const checked = ref(props.checked)
 
-const prefixCls = "iui-tag";
+const prefixCls = 'dui-tag'
 
 const cls = computed(() => [
   prefixCls,
@@ -81,27 +81,27 @@ const cls = computed(() => [
     [`${prefixCls}-checked`]: checked.value,
     [`${prefixCls}-custom-color`]: props.color,
   },
-]);
+])
 
-const emit = defineEmits(["change", "close", "click"]);
+const emit = defineEmits(['change', 'close', 'click'])
 
 const handleTagClick = () => {
   if (props.checkable) {
-    checked.value = !checked.value;
-    emit("change", checked.value);
+    checked.value = !checked.value
+    emit('change', checked.value)
   }
-  emit("click");
-};
+  emit('click')
+}
 
 const handleTagClose = () => {
-  visible.value = false;
-  emit("close");
-};
+  visible.value = false
+  emit('close')
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-tag {
+@import '../../style/index.scss';
+.dui-tag {
   display: inline-flex;
   align-items: center;
   white-space: nowrap;

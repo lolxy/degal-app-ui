@@ -5,14 +5,13 @@
       overflowX: isScroll ? 'auto' : 'hidden',
       marginTop: `${grid.rowGap / 2}px`,
       marginBottom: `${grid.rowGap / 2}px`,
-    }"
-  >
+    }">
     <slot />
   </view>
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { inject } from 'vue'
 
 const props = defineProps({
   /**
@@ -23,21 +22,21 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
-const grid = inject("iui-grid-props");
+const grid = inject('dui-grid-props')
 
 // 是否滑动
-const isScroll = props.scroll ? props.scroll : grid.scroll;
+const isScroll = props.scroll ? props.scroll : grid.scroll
 
 // 是否有间距 有间距时，不隐藏边框
-const borderWidth = grid.rowGap ? "1px" : 0;
+const borderWidth = grid.rowGap ? '1px' : 0
 
-const prefixCls = "iui-grid-row";
+const prefixCls = 'dui-grid-row'
 </script>
 
 <style lang="scss" scoped>
-.iui-grid-row {
+.dui-grid-row {
   display: flex;
   width: inherit;
 
@@ -51,7 +50,7 @@ const prefixCls = "iui-grid-row";
   }
 
   /* #ifdef MP */
-  :deep(iui-grid-item:not(:first-child) > view) {
+  :deep(dui-grid-item:not(:first-child) > view) {
     border-left-width: v-bind(borderWidth);
   }
   /* #endif */

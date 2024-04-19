@@ -1,41 +1,28 @@
 <template>
-  <view
-    :class="cls"
-    @touchstart="onTouchStart"
-    @touchmove="onTouchMove"
-    @touchend="onTouchEnd"
-  >
+  <view :class="cls" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd">
     <view
       :class="[`${prefixCls}-content`]"
       :style="{
         transform: `translateX(${offset}px)`,
-      }"
-    >
+      }">
       <slot />
 
       <view
         :class="`${prefixCls}-menu`"
         :style="{
           minWidth: menuWidth ? `${menuWidth}px` : 'auto',
-        }"
-      >
+        }">
         <block v-for="(menu, idx) in actions" :key="idx">
           <view
             v-if="!menu.slotName"
             class="menu-item"
             :style="{
               ...menu.style,
-              width:
-                idx == actions.length - 1
-                  ? menuWidth
-                    ? `${menuWidth + 20}px`
-                    : 'auto'
-                  : 'auto',
+              width: idx == actions.length - 1 ? (menuWidth ? `${menuWidth + 20}px` : 'auto') : 'auto',
             }"
-            @click="handleClick(menu, idx)"
-          >
+            @click="handleClick(menu, idx)">
             <view class="icon" v-if="menu.icon">
-              <iui-icon :name="menu.icon"></iui-icon>
+              <dui-icon :name="menu.icon"></dui-icon>
             </view>
 
             <text class="text"> {{ menu.text }}</text>
@@ -51,8 +38,8 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, onMounted, ref, watch } from "vue";
-import { getRect } from "../../helper/rect";
+import { computed, getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { getRect } from '../../helper/rect'
 
 const props = defineProps({
   /**
@@ -70,124 +57,123 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
-});
-const innerValue = ref(false);
+})
+const innerValue = ref(false)
 
-const prefixCls = "iui-swipe-action";
+const prefixCls = 'dui-swipe-action'
 
-const cls = computed(() => [prefixCls]);
+const cls = computed(() => [prefixCls])
 
-const emit = defineEmits(["open", "close", "click"]);
+const emit = defineEmits(['open', 'close', 'click'])
 
 // 菜单宽度
-const menuWidth = ref(0);
+const menuWidth = ref(0)
 
-let startX = 0;
-let startY = 0;
-const offset = ref(0);
-const lastOffset = ref(0);
+let startX = 0
+let startY = 0
+const offset = ref(0)
+const lastOffset = ref(0)
 
 const onTouchStart = (e) => {
-  startX = e.touches[0].pageX;
-  startY = e.touches[0].pageY;
-};
+  startX = e.touches[0].pageX
+  startY = e.touches[0].pageY
+}
 
 const onTouchMove = (e) => {
-  if (startX === 0 && startY === 0) return;
-  const { pageX, pageY } = e.touches[0];
-  const offsetX = pageX - startX;
-  const offsetY = pageY - startY;
+  if (startX === 0 && startY === 0) return
+  const { pageX, pageY } = e.touches[0]
+  const offsetX = pageX - startX
+  const offsetY = pageY - startY
 
   if (innerValue.value) {
-    const newOffset = lastOffset.value + offsetX;
+    const newOffset = lastOffset.value + offsetX
 
     if (newOffset < -menuWidth.value - 10) {
-      offset.value = -menuWidth.value - 10;
+      offset.value = -menuWidth.value - 10
     } else {
-      offset.value = newOffset > 10 ? 10 : newOffset;
+      offset.value = newOffset > 10 ? 10 : newOffset
     }
   } else {
     if (offsetX > 0) {
-      offset.value = 10;
+      offset.value = 10
     } else {
-      offset.value =
-        offsetX > -menuWidth.value - 10 ? offsetX : -menuWidth.value - 10;
+      offset.value = offsetX > -menuWidth.value - 10 ? offsetX : -menuWidth.value - 10
     }
   }
 
   if (Math.abs(offsetX) > Math.abs(offsetY)) {
-    e.preventDefault();
+    e.preventDefault()
   }
-};
+}
 
 const onTouchEnd = () => {
   if (innerValue.value && offset.value > -menuWidth.value + 20) {
-    offset.value = 0;
-    innerValue.value = false;
-    return;
+    offset.value = 0
+    innerValue.value = false
+    return
   }
 
   if (offset.value < -30) {
-    offset.value = -menuWidth.value;
-    innerValue.value = true;
-    lastOffset.value = offset.value;
-    emit("open");
+    offset.value = -menuWidth.value
+    innerValue.value = true
+    lastOffset.value = offset.value
+    emit('open')
   } else {
-    offset.value = 0;
-    innerValue.value = false;
-    emit("close");
+    offset.value = 0
+    innerValue.value = false
+    emit('close')
   }
-};
+}
 
 // 获取菜单宽度
-const instance = getCurrentInstance();
+const instance = getCurrentInstance()
 
 const getMenuWidth = () => {
   getRect(instance, `.${prefixCls}-menu`).then((res) => {
-    menuWidth.value = res.width;
-  });
-};
+    menuWidth.value = res.width
+  })
+}
 
 onMounted(() => {
-  getMenuWidth();
-});
+  getMenuWidth()
+})
 
 watch(
   () => props.defaultOpen,
   (value) => {
     if (value) {
-      offset.value = -menuWidth.value;
-      innerValue.value = true;
-      lastOffset.value = offset.value;
-      emit("open");
+      offset.value = -menuWidth.value
+      innerValue.value = true
+      lastOffset.value = offset.value
+      emit('open')
     }
   }
-);
+)
 
 const close = () => {
-  offset.value = 0;
-  innerValue.value = false;
-};
+  offset.value = 0
+  innerValue.value = false
+}
 
 const handleClick = async (menu, index) => {
-  emit("click", menu.text, index);
+  emit('click', menu.text, index)
 
   if (menu.onClick) {
-    const res = await menu.onClick(menu.text, index);
-    if (res === false) return;
+    const res = await menu.onClick(menu.text, index)
+    if (res === false) return
   }
 
-  close();
-  emit("close");
-};
+  close()
+  emit('close')
+}
 
 defineExpose({
   close,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-.iui-swipe-action {
+.dui-swipe-action {
   touch-action: none;
   overflow: hidden;
 

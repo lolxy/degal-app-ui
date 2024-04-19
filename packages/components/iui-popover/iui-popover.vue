@@ -1,11 +1,6 @@
 <template>
   <view :class="cls">
-    <view
-      :class="`${prefixCls}-mask`"
-      @click.passive="close"
-      v-if="innerVisible"
-    >
-    </view>
+    <view :class="`${prefixCls}-mask`" @click.passive="close" v-if="innerVisible"> </view>
     <view
       :class="[`${prefixCls}-content`, position]"
       :style="{
@@ -14,8 +9,7 @@
         left: popoverOffset.left + 'px',
         top: popoverOffset.top + 'px',
       }"
-      v-if="innerVisible || !ready"
-    >
+      v-if="innerVisible || !ready">
       <view
         id="content"
         class="content"
@@ -23,8 +17,7 @@
           backgroundColor: theme === 'light' ? '#fff' : '#000',
           width: isNumber(width) ? width + 'px' : width,
         }"
-        @click="handleClick"
-      >
+        @click="handleClick">
         <text v-if="!$slots.content">{{ content }} </text>
         <slot name="content" :close="close" />
       </view>
@@ -35,24 +28,19 @@
           left: arrowOffset.left + 'px',
           top: arrowOffset.top + 'px',
           backgroundColor: theme === 'light' ? '#fff' : '#000',
-        }"
-      ></view>
+        }"></view>
     </view>
 
-    <view
-      id="trigger"
-      :class="`${prefixCls}-trigger`"
-      @click="handleTriggerClick"
-    >
+    <view id="trigger" :class="`${prefixCls}-trigger`" @click="handleTriggerClick">
       <slot />
     </view>
   </view>
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, onMounted, ref } from "vue";
-import { getRect } from "../../helper/rect";
-import { isNumber } from "../../helper/is";
+import { computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { getRect } from '../../helper/rect'
+import { isNumber } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -68,7 +56,7 @@ const props = defineProps({
    */
   content: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 位置
@@ -76,7 +64,7 @@ const props = defineProps({
    */
   position: {
     type: String,
-    default: "top",
+    default: 'top',
   },
   /**
    * 主题
@@ -84,174 +72,174 @@ const props = defineProps({
    */
   theme: {
     type: String,
-    default: "light",
+    default: 'light',
   },
   /**
    * 宽度
    */
   width: {
     type: [String, Number],
-    default: "max-content",
+    default: 'max-content',
   },
-});
+})
 
-const prefixCls = "iui-popover";
+const prefixCls = 'dui-popover'
 
-const cls = computed(() => [prefixCls]);
+const cls = computed(() => [prefixCls])
 
-const innerVisible = ref(props.visible);
+const innerVisible = ref(props.visible)
 
-const emit = defineEmits(["update:visible", "close", "click"]);
+const emit = defineEmits(['update:visible', 'close', 'click'])
 
 // 用于控制动画
-const show = ref(false);
+const show = ref(false)
 
 const handleTriggerClick = () => {
   if (innerVisible.value) {
-    close();
+    close()
   } else {
-    innerVisible.value = !innerVisible.value;
-    emit("update:visible", innerVisible.value);
+    innerVisible.value = !innerVisible.value
+    emit('update:visible', innerVisible.value)
     setTimeout(() => {
-      show.value = !show.value;
-    }, 50);
+      show.value = !show.value
+    }, 50)
   }
-};
+}
 
 const handleClick = () => {
-  emit("click");
-};
+  emit('click')
+}
 
-const instance = getCurrentInstance();
+const instance = getCurrentInstance()
 
 // 计算位置
-const ready = ref(false);
+const ready = ref(false)
 const popoverOffset = ref({
   top: 0,
   left: 0,
-});
+})
 const arrowOffset = ref({
   top: 0,
   left: 0,
-});
+})
 // 屏幕宽度
-const screenWidth = uni.getSystemInfoSync().screenWidth;
+const screenWidth = uni.getSystemInfoSync().screenWidth
 
 const getPosition = async () => {
-  const p = props.position;
+  const p = props.position
 
   // 获取触发元素的宽度
-  const trigger = await getRect(instance, "#trigger");
+  const trigger = await getRect(instance, '#trigger')
   // 获取内容宽度
-  const content = await getRect(instance, "#content");
+  const content = await getRect(instance, '#content')
   //   console.log(trigger, content);
 
-  const [popover, arrow] = await calcOffset(trigger, content, p);
+  const [popover, arrow] = await calcOffset(trigger, content, p)
 
-  popoverOffset.value = popover;
-  arrowOffset.value = arrow;
+  popoverOffset.value = popover
+  arrowOffset.value = arrow
 
-  ready.value = true;
-};
+  ready.value = true
+}
 
 const calcOffset = async (trigger, content, position) => {
   const result = {
     top: 0,
     left: 0,
-  };
+  }
   const arrow = {
     top: 0,
     left: 0,
-  };
+  }
 
   // 向左偏移到中心的距离
-  const center = (trigger.width - content.width) / 2;
+  const center = (trigger.width - content.width) / 2
 
   switch (position) {
-    case "top":
+    case 'top':
       // 内容相对触发元素计算偏移位置
       // 如果偏移位置会导致内容超出屏幕，则偏移到离屏幕边缘10px的位置
       if (Math.abs(center) > trigger.left) {
-        result.left = 10 - trigger.left;
-        arrow.left = trigger.left - 5 - 10 + trigger.width / 2;
+        result.left = 10 - trigger.left
+        arrow.left = trigger.left - 5 - 10 + trigger.width / 2
       } else if (content.right > screenWidth) {
-        result.left = -(content.right - screenWidth + 10);
-        arrow.left = content.right - screenWidth + 10 + trigger.width / 2 - 5;
+        result.left = -(content.right - screenWidth + 10)
+        arrow.left = content.right - screenWidth + 10 + trigger.width / 2 - 5
       } else {
-        result.left = center;
-        arrow.left = content.width / 2 - 5;
+        result.left = center
+        arrow.left = content.width / 2 - 5
       }
-      result.top = -content.height - 10;
-      arrow.top = content.height - 5;
-      break;
-    case "bottom":
+      result.top = -content.height - 10
+      arrow.top = content.height - 5
+      break
+    case 'bottom':
       if (Math.abs(center) > trigger.left) {
-        result.left = 10 - trigger.left;
-        arrow.left = trigger.left - 5 - 10 + trigger.width / 2;
+        result.left = 10 - trigger.left
+        arrow.left = trigger.left - 5 - 10 + trigger.width / 2
       } else if (content.right > screenWidth) {
-        result.left = -(content.right - screenWidth + 10);
-        arrow.left = content.right - screenWidth + 10 + trigger.width / 2 - 5;
+        result.left = -(content.right - screenWidth + 10)
+        arrow.left = content.right - screenWidth + 10 + trigger.width / 2 - 5
       } else {
-        result.left = center;
-        arrow.left = content.width / 2 - 5;
+        result.left = center
+        arrow.left = content.width / 2 - 5
       }
-      result.top = trigger.height + 10;
-      arrow.top = -5;
-      break;
-    case "tl":
-      result.left = 0;
-      result.top = -content.height - 10;
-      arrow.top = content.height - 5;
-      arrow.left = trigger.width / 2 - 5;
-      break;
-    case "tr":
-      result.left = trigger.width - content.width;
-      result.top = -content.height - 10;
-      arrow.top = content.height - 5;
-      arrow.left = content.width - trigger.width + trigger.width / 2 - 5;
-      break;
-    case "bl":
-      result.left = 0;
-      result.top = trigger.height + 10;
-      arrow.top = -5;
-      arrow.left = trigger.width / 2 - 5;
-      break;
+      result.top = trigger.height + 10
+      arrow.top = -5
+      break
+    case 'tl':
+      result.left = 0
+      result.top = -content.height - 10
+      arrow.top = content.height - 5
+      arrow.left = trigger.width / 2 - 5
+      break
+    case 'tr':
+      result.left = trigger.width - content.width
+      result.top = -content.height - 10
+      arrow.top = content.height - 5
+      arrow.left = content.width - trigger.width + trigger.width / 2 - 5
+      break
+    case 'bl':
+      result.left = 0
+      result.top = trigger.height + 10
+      arrow.top = -5
+      arrow.left = trigger.width / 2 - 5
+      break
 
-    case "br":
-      result.left = trigger.width - content.width;
-      result.top = trigger.height + 10;
-      arrow.top = -5;
-      arrow.left = content.width - trigger.width + trigger.width / 2 - 5;
-      break;
+    case 'br':
+      result.left = trigger.width - content.width
+      result.top = trigger.height + 10
+      arrow.top = -5
+      arrow.left = content.width - trigger.width + trigger.width / 2 - 5
+      break
 
     default:
-      break;
+      break
   }
-  return [result, arrow];
-};
+  return [result, arrow]
+}
 
 const close = () => {
-  emit("close");
-  show.value = false;
+  emit('close')
+  show.value = false
   setTimeout(() => {
-    innerVisible.value = false;
-    emit("update:visible", innerVisible.value);
-  }, 300);
-};
+    innerVisible.value = false
+    emit('update:visible', innerVisible.value)
+  }, 300)
+}
 
 onMounted(() => {
-  getPosition();
-});
+  getPosition()
+})
 
 defineExpose({
   close,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
-.iui-popover {
+.dui-popover {
   position: relative;
   display: flex;
 

@@ -1,13 +1,12 @@
 <template>
   <view :class="prefixCls">
     <cell
-      class="form-cell iui-cell"
+      class="form-cell dui-cell"
       :style="{
         alignItems: align === 'center' ? 'center' : `flex-${align}`,
         flexDirection: vertical ? 'column' : 'row',
         borderBottom: split ? 'inhert' : 'none',
-      }"
-    >
+      }">
       <view
         :class="[
           `${prefixCls}-label`,
@@ -15,8 +14,7 @@
             [`${prefixCls}-label-required`]: required,
             [`${prefixCls}-label-vertical`]: vertical,
           },
-        ]"
-      >
+        ]">
         {{ label }}
       </view>
 
@@ -38,8 +36,8 @@
 </template>
 
 <script setup>
-import { computed, inject, onMounted, provide, ref, watch } from "vue";
-import { isArray, isString, isObject } from "../../helper/is";
+import { computed, inject, onMounted, provide, ref, watch } from 'vue'
+import { isArray, isString, isObject } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -80,99 +78,99 @@ const props = defineProps({
    */
   align: {
     type: String,
-    default: "start",
+    default: 'start',
   },
-});
+})
 
-const prefixCls = "iui-form-item";
+const prefixCls = 'dui-form-item'
 
 // 表单属性
-const formProps = inject("formProps");
-const inForm = inject("inForm");
-const setRule = inject("setRule");
-const errorHints = inject("errorHints");
-const validateField = inject("validateField");
+const formProps = inject('formProps')
+const inForm = inject('inForm')
+const setRule = inject('setRule')
+const errorHints = inject('errorHints')
+const validateField = inject('validateField')
 
-const rules = computed(() => props.rules || formProps.rules?.[props.field]);
-const field = computed(() => props.field || "inputValue");
-const vertical = computed(() => formProps.layout === "vertical");
-const split = computed(() => formProps.split);
+const rules = computed(() => props.rules || formProps.rules?.[props.field])
+const field = computed(() => props.field || 'inputValue')
+const vertical = computed(() => formProps.layout === 'vertical')
+const split = computed(() => formProps.split)
 
-const modelValue = computed(() => formProps.model?.[field.value]);
+const modelValue = computed(() => formProps.model?.[field.value])
 
 // 监听 modelValue 变化
 watch(
   () => modelValue.value,
   () => {
-    triggerEvent("change");
+    triggerEvent('change')
   },
   {
     deep: true,
   }
-);
+)
 
 // 校验错误提示
-const errorHint = ref();
+const errorHint = ref()
 
 // 监听form组件校验
 watch(
   () => errorHints.value,
   (errors) => {
-    errorHint.value = errors[field.value];
+    errorHint.value = errors[field.value]
   },
   {
     deep: true,
   }
-);
+)
 
 // 校验触发器
 const trigger = computed(() => {
-  let temp = [];
+  let temp = []
 
   if (rules.value) {
     if (isArray(rules.value)) {
       rules.value.forEach((rule) => {
-        if (isArray(rule.trigger)) temp = temp.concat(rule.trigger);
-        if (isString(rule.trigger)) temp = temp.concat([rule.trigger]);
+        if (isArray(rule.trigger)) temp = temp.concat(rule.trigger)
+        if (isString(rule.trigger)) temp = temp.concat([rule.trigger])
         // 默认触发事件为 change
-        if (!rule.trigger) temp = temp.concat(["change"]);
-      });
+        if (!rule.trigger) temp = temp.concat(['change'])
+      })
     }
     if (isObject(rules.value)) {
-      return rules.value.trigger ? [rules.value.trigger] : ["change"];
+      return rules.value.trigger ? [rules.value.trigger] : ['change']
     }
   }
-  return Array.from(new Set(temp));
-});
+  return Array.from(new Set(temp))
+})
 
 // 触发事件 blur | change
 const triggerEvent = (event) => {
   if (trigger.value.includes(event)) {
-    validateField(field.value);
+    validateField(field.value)
   }
-};
+}
 
 onMounted(() => {
   if (!inForm) {
-    console.error("组件 iui-form-item 需要在组件 iui-form 中使用");
-    return;
+    console.error('组件 dui-form-item 需要在组件 dui-form 中使用')
+    return
   }
 
   // 如果存在校验规则，需要在 form 中注册
   if (props.rules) {
-    setRule(field.value, props.rules);
+    setRule(field.value, props.rules)
   }
-});
+})
 
-provide("formItem", {
+provide('formItem', {
   rules,
   triggerEvent,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-form-item {
+@import '../../style/index.scss';
+.dui-form-item {
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -206,7 +204,7 @@ provide("formItem", {
 
     &-required {
       &::before {
-        content: "*";
+        content: '*';
         height: 100%;
         color: $danger-6;
         position: absolute;

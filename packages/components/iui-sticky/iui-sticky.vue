@@ -1,15 +1,11 @@
 <template>
-  <view
-    :id="`${prefixCls}-content`"
-    :class="cls"
-    :style="{ top: offsetTop + 'px', paddingBottom: offsetTop + 'px' }"
-  >
+  <view :id="`${prefixCls}-content`" :class="cls" :style="{ top: offsetTop + 'px', paddingBottom: offsetTop + 'px' }">
     <slot />
   </view>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed } from 'vue'
 
 const props = defineProps({
   /**
@@ -27,15 +23,15 @@ const props = defineProps({
     type: Number,
     default: 1000,
   },
-});
+})
 
-const prefixCls = "iui-sticky";
+const prefixCls = 'dui-sticky'
 
-const cls = computed(() => [prefixCls]);
+const cls = computed(() => [prefixCls])
 </script>
 
 <style lang="scss" scoped>
-.iui-sticky {
+.dui-sticky {
   position: sticky;
   z-index: v-bind(zIndex);
 }

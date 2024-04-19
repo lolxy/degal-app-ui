@@ -5,20 +5,14 @@
       :style="{
         padding: inForm ? '0' : '0 16px',
         height: inForm ? 'auto' : '52px',
-      }"
-    >
+      }">
       <template v-if="label || $slots.prefix">
         <view :class="`${prefixCls}-prefix`">
           <slot name="prefix"></slot>
 
-          <view
-            :class="[
-              `${prefixCls}-label`,
-              { [`${prefixCls}-label-required`]: required },
-            ]"
-          >
+          <view :class="[`${prefixCls}-label`, { [`${prefixCls}-label-required`]: required }]">
             <view :class="`${prefixCls}-label-icon`" v-if="icon">
-              <iui-icon :name="icon" />
+              <dui-icon :name="icon" />
             </view>
 
             {{ label }}
@@ -43,14 +37,9 @@
           @focus="$emit('focus', $evnet)"
           @confirm="$emit('confirm', $evnet)"
           @keyboardheightchange="$emit('keyboardheightchange', $evnet)"
-          @blur="handleBlur"
-        />
-        <view
-          v-if="clearable && inputValue"
-          :class="`${prefixCls}-clear`"
-          @click="handleClearInput"
-        >
-          <iui-icon name="close-circle-fill" color="#c9cdd4"></iui-icon>
+          @blur="handleBlur" />
+        <view v-if="clearable && inputValue" :class="`${prefixCls}-clear`" @click="handleClearInput">
+          <dui-icon name="close-circle-fill" color="#c9cdd4"></dui-icon>
         </view>
 
         <template v-if="$slots.suffix">
@@ -61,11 +50,7 @@
       </view>
     </view>
 
-    <view
-      :class="`${prefixCls}-error-hint`"
-      :style="errorHintStyle"
-      v-if="errorHint"
-    >
+    <view :class="`${prefixCls}-error-hint`" :style="errorHintStyle" v-if="errorHint">
       <slot name="error" :message="errorHint">
         {{ errorHint }}
       </slot>
@@ -74,18 +59,10 @@
 </template>
 
 <script setup>
-import {
-  computed,
-  onMounted,
-  ref,
-  getCurrentInstance,
-  nextTick,
-  inject,
-  watch,
-} from "vue";
-import { getRect } from "../../helper/rect";
-import Schema from "../../helper/validator";
-import { isEmpty, isNull, isArray, isString, isObject } from "../../helper/is";
+import { computed, onMounted, ref, getCurrentInstance, nextTick, inject, watch } from 'vue'
+import { getRect } from '../../helper/rect'
+import Schema from '../../helper/validator'
+import { isEmpty, isNull, isArray, isString, isObject } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -93,7 +70,7 @@ const props = defineProps({
    */
   modelValue: {
     type: [String, Number],
-    default: "",
+    default: '',
   },
   /**
    * 标签
@@ -142,7 +119,7 @@ const props = defineProps({
    */
   type: {
     type: String,
-    default: "text",
+    default: 'text',
   },
   /**
    * 最大输入长度
@@ -180,14 +157,14 @@ const props = defineProps({
    */
   confirmType: {
     type: String,
-    default: "done",
+    default: 'done',
   },
   /**
    * 对齐
    */
   align: {
     type: String,
-    default: "left",
+    default: 'left',
   },
   /**
    * 布局方向
@@ -195,65 +172,63 @@ const props = defineProps({
    */
   direction: {
     type: String,
-    default: "horizontal",
+    default: 'horizontal',
   },
-});
+})
 
-const inputValue = ref(props.modelValue);
+const inputValue = ref(props.modelValue)
 
 watch(
   () => props.modelValue,
   (val) => {
-    inputValue.value = val;
+    inputValue.value = val
   }
-);
+)
 
-const formatValue = computed(() =>
-  props.type == "number" ? Number(inputValue.value) : inputValue.value
-);
+const formatValue = computed(() => (props.type == 'number' ? Number(inputValue.value) : inputValue.value))
 
-const prefixCls = "iui-input";
+const prefixCls = 'dui-input'
 
 const cls = computed(() => [
   prefixCls,
   {
     [`${prefixCls}-disabled`]: props.disabled,
     [`${prefixCls}-readonly`]: props.readonly,
-    [`${prefixCls}-vertical`]: props.direction === "vertical",
+    [`${prefixCls}-vertical`]: props.direction === 'vertical',
   },
-]);
+])
 
 // 校验样式
-const errorHintStyle = ref({});
+const errorHintStyle = ref({})
 const setErrorHintStyle = () => {
   if (props.rules) {
-    const instance = getCurrentInstance();
-    getRect(instance, ".input").then((res) => {
+    const instance = getCurrentInstance()
+    getRect(instance, '.input').then((res) => {
       errorHintStyle.value = {
         paddingLeft: `${res.left}px`,
-      };
-    });
+      }
+    })
   }
-};
+}
 
-let validator = null;
+let validator = null
 
 // 初始化校验器
 const initValidator = () => {
   if (!isEmpty(props.rules)) {
     const descriptor = {
       inputValue: props.rules,
-    };
-    validator = new Schema(descriptor);
+    }
+    validator = new Schema(descriptor)
 
-    setErrorHintStyle();
+    setErrorHintStyle()
   }
-};
+}
 
 // 校验
-const formItem = ref(null); // 表单项
+const formItem = ref(null) // 表单项
 
-const errorHint = ref();
+const errorHint = ref()
 const validate = () => {
   // 如果校验器存在
   if (!isNull(validator)) {
@@ -263,94 +238,85 @@ const validate = () => {
       },
       (errors) => {
         if (errors) {
-          errorHint.value = errors[0].message;
-          return;
+          errorHint.value = errors[0].message
+          return
         }
-        errorHint.value = null;
+        errorHint.value = null
       }
-    );
+    )
   }
-};
+}
 
 // 校验触发规则
 
 const trigger = computed(() => {
-  let temp = [];
-  const rules = props.rules;
+  let temp = []
+  const rules = props.rules
 
   if (rules) {
     if (isArray(rules)) {
       rules.forEach((rule) => {
-        if (isArray(rule.trigger)) temp = temp.concat(rule.trigger);
-        if (isString(rule.trigger)) temp = temp.concat([rule.trigger]);
-      });
+        if (isArray(rule.trigger)) temp = temp.concat(rule.trigger)
+        if (isString(rule.trigger)) temp = temp.concat([rule.trigger])
+      })
     }
     if (isObject(rules)) {
-      return rules.trigger;
+      return rules.trigger
     }
   }
-  return Array.from(new Set(temp));
-});
+  return Array.from(new Set(temp))
+})
 
 onMounted(() => {
-  initValidator();
-});
+  initValidator()
+})
 
-const emit = defineEmits([
-  "update:modelValue",
-  "input",
-  "focus",
-  "blur",
-  "confirm",
-  "keyboardheightchange",
-]);
+const emit = defineEmits(['update:modelValue', 'input', 'focus', 'blur', 'confirm', 'keyboardheightchange'])
 
 const handleClearInput = () => {
-  inputValue.value = "";
-  emit("update:modelValue", "");
-};
+  inputValue.value = ''
+  emit('update:modelValue', '')
+}
 
 const handleInput = async (e) => {
-  inputValue.value = e.detail.value;
-  emit("update:modelValue", formatValue.value);
-  emit("input", e);
-  await nextTick();
-  if (trigger.value?.includes("change")) validate();
+  inputValue.value = e.detail.value
+  emit('update:modelValue', formatValue.value)
+  emit('input', e)
+  await nextTick()
+  if (trigger.value?.includes('change')) validate()
 
   if (formItem.value) {
-    formItem.value.triggerEvent("change");
+    formItem.value.triggerEvent('change')
   }
-};
+}
 
 const handleBlur = (e) => {
-  emit("blur", e);
-  if (trigger.value?.includes("blur")) validate();
+  emit('blur', e)
+  if (trigger.value?.includes('blur')) validate()
   if (formItem.value) {
-    formItem.value.triggerEvent("blur");
+    formItem.value.triggerEvent('blur')
   }
-};
+}
 
 // 表单中使用
-const inForm = inject("inForm");
+const inForm = inject('inForm')
 
 if (inForm) {
   // 表单中的校验规则
-  formItem.value = inject("formItem");
+  formItem.value = inject('formItem')
   if (props.rules) {
-    console.error(
-      "在表单中使用iui-input，不需要在iui-input上设置rules，应该在iui-form上设置rules"
-    );
+    console.error('在表单中使用dui-input，不需要在dui-input上设置rules，应该在dui-form上设置rules')
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-input-wrapper {
+@import '../../style/index.scss';
+.dui-input-wrapper {
   position: relative;
   background-color: $color-bg;
 
-  .iui-input {
+  .dui-input {
     height: $size-13;
     width: 100%;
     display: flex;
@@ -366,7 +332,7 @@ if (inForm) {
 
       &-required {
         &::before {
-          content: "*";
+          content: '*';
           height: 100%;
           color: $danger-6;
           margin-right: $size-1;
@@ -406,7 +372,7 @@ if (inForm) {
     }
 
     &-disabled {
-      .iui-input-label {
+      .dui-input-label {
         color: $color-text-lighten;
       }
       cursor: not-allowed;
@@ -426,7 +392,7 @@ if (inForm) {
     &-readonly {
       cursor: not-allowed;
       .input {
-        color: var(--iui-gray-6);
+        color: var(--dui-gray-6);
       }
     }
 
@@ -450,12 +416,12 @@ if (inForm) {
         width: 100%;
       }
 
-      .iui-input-prefix {
+      .dui-input-prefix {
         padding: $size-3 0 0 0;
       }
     }
   }
-  .iui-input-error-hint {
+  .dui-input-error-hint {
     background-color: $color-bg;
     font-size: $font-size-small;
     padding-bottom: $size-2;
@@ -467,7 +433,7 @@ if (inForm) {
 </style>
 <!--scoped会导致小程序placeholder样式失效 -->
 <style lang="scss">
-.iui-input-placeholder {
+.dui-input-placeholder {
   color: $color-text-input-placeholder;
   font-size: 15px;
 }

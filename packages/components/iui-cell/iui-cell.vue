@@ -4,12 +4,11 @@
       :class="cls"
       :style="{
         minHeight: getCellHeight(),
-      }"
-    >
+      }">
       <view :class="`${prefixCls}-title`" v-if="label || icon || $slots.icon">
         <view :class="`${prefixCls}-icon`" v-if="$slots.icon || icon">
           <slot name="icon" v-if="$slots.icon" />
-          <iui-icon :name="icon" :size="20" v-else></iui-icon>
+          <dui-icon :name="icon" :size="20" v-else></dui-icon>
         </view>
         <view>
           <view :class="`${prefixCls}-label`"> {{ label }}</view>
@@ -19,16 +18,13 @@
 
       <slot />
 
-      <view
-        :class="`${prefixCls}-extra`"
-        v-if="extra || $slots.extra || showArrow"
-      >
+      <view :class="`${prefixCls}-extra`" v-if="extra || $slots.extra || showArrow">
         <view :class="`${prefixCls}-extra-content`"> {{ extra }}</view>
 
         <slot name="extra" v-if="$slots.extra" />
 
         <view :class="`${prefixCls}-extra-arrow`">
-          <iui-icon name="right" v-if="showArrow"></iui-icon>
+          <dui-icon name="right" v-if="showArrow"></dui-icon>
         </view>
       </view>
     </cell>
@@ -36,8 +32,8 @@
 </template>
 
 <script setup>
-import { computed, getCurrentInstance } from "vue";
-import { isUndefined } from "../../helper/is";
+import { computed, getCurrentInstance } from 'vue'
+import { isUndefined } from '../../helper/is'
 
 /**
  * 单元格
@@ -85,46 +81,46 @@ const props = defineProps({
     type: Boolean,
     default: undefined,
   },
-});
+})
 
-const { provides } = getCurrentInstance();
+const { provides } = getCurrentInstance()
 
-const prefixCls = "iui-cell";
+const prefixCls = 'dui-cell'
 
-const cls = computed(() => [prefixCls]);
+const cls = computed(() => [prefixCls])
 
 const getCellHeight = () => {
-  let height = props.height;
+  let height = props.height
 
   if (props.title && props.desc) {
-    height += 20;
+    height += 20
   }
 
-  return `${height}px`;
-};
+  return `${height}px`
+}
 
 const showArrow = computed(() => {
-  const listProps = { arrow: false };
+  const listProps = { arrow: false }
 
-  if (provides["list-props"]) {
-    listProps.arrow = provides["list-props"].arrow;
+  if (provides['list-props']) {
+    listProps.arrow = provides['list-props'].arrow
   }
 
   if (!isUndefined(props.arrow)) {
-    return props.arrow;
+    return props.arrow
   }
 
-  return listProps.arrow;
-});
+  return listProps.arrow
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-cell-wrapper {
+@import '../../style/index.scss';
+.dui-cell-wrapper {
   width: 100%;
   background-color: $color-bg;
 
-  .iui-cell {
+  .dui-cell {
     display: flex;
     align-items: center;
     justify-content: space-between;

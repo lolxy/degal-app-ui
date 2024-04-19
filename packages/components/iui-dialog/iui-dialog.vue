@@ -5,9 +5,8 @@
     :style="{
       background: showMask ? 'rgba(0,0,0,0.5)' : 'transparent',
     }"
-    @click="handleMaskClick"
-  >
-    <iui-translation ref="anim" enter="fadeZoomIn" leave="fadeZoomOut">
+    @click="handleMaskClick">
+    <dui-translation ref="anim" enter="fadeZoomIn" leave="fadeZoomOut">
       <view :class="`${prefixCls}-container`">
         <view :class="`${prefixCls}-modal`" @click.stop>
           <view class="title">
@@ -22,13 +21,13 @@
           <view class="footer" v-if="!$slots.action">
             <block v-if="!$slots.action">
               <view v-if="dialog.cancel" class="button" @click="handleCancel">
-                <iui-spin v-if="cancelLoading"></iui-spin>
+                <dui-spin v-if="cancelLoading"></dui-spin>
                 <template v-else>
                   {{ dialog.cancelText }}
                 </template>
               </view>
               <view class="button" @click="handleConfirm">
-                <iui-spin v-if="confirmLoading"></iui-spin>
+                <dui-spin v-if="confirmLoading"></dui-spin>
                 <template v-else>
                   {{ dialog.confirmText }}
                 </template>
@@ -38,12 +37,12 @@
           <slot name="action" />
         </view>
       </view>
-    </iui-translation>
+    </dui-translation>
   </view>
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from 'vue'
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -82,14 +81,14 @@ const props = defineProps({
    */
   cancelText: {
     type: String,
-    default: "取消",
+    default: '取消',
   },
   /**
    * 确认文字
    */
   confirmText: {
     type: String,
-    default: "确认",
+    default: '确认',
   },
   /**
    * 点击遮罩层是否关闭
@@ -110,19 +109,19 @@ const props = defineProps({
   beforeCancel: {
     type: Function,
   },
-});
+})
 
-const innerVisible = ref(false);
+const innerVisible = ref(false)
 
-const prefixCls = "iui-dialog";
+const prefixCls = 'dui-dialog'
 
-const cls = computed(() => [prefixCls]);
+const cls = computed(() => [prefixCls])
 
-const emit = defineEmits(["update:modelValue", "close", "confirm", "cancel"]);
+const emit = defineEmits(['update:modelValue', 'close', 'confirm', 'cancel'])
 
-const anim = ref();
+const anim = ref()
 
-const showMask = ref(false);
+const showMask = ref(false)
 
 const dialog = ref({
   title: props.title,
@@ -134,85 +133,85 @@ const dialog = ref({
   maskClosable: props.maskClosable,
   beforeConfirm: props.beforeConfirm,
   beforeCancel: props.beforeCancel,
-});
+})
 
 const open = async (params) => {
   dialog.value = {
     ...props,
     ...params,
-  };
+  }
 
-  innerVisible.value = true;
+  innerVisible.value = true
   setTimeout(() => {
-    showMask.value = true;
-  }, 50);
-  await anim.value?.enter();
-};
+    showMask.value = true
+  }, 50)
+  await anim.value?.enter()
+}
 
 const close = async () => {
-  if (!innerVisible.value) return;
+  if (!innerVisible.value) return
 
-  showMask.value = false;
-  await anim.value?.leave();
-  innerVisible.value = false;
-  emit("update:modelValue", false);
-  emit("close");
-};
+  showMask.value = false
+  await anim.value?.leave()
+  innerVisible.value = false
+  emit('update:modelValue', false)
+  emit('close')
+}
 
 const handleMaskClick = () => {
-  console.log("handleMaskClick");
+  console.log('handleMaskClick')
   if (props.maskClosable) {
-    close();
+    close()
   }
-};
+}
 
-const confirmLoading = ref(false);
+const confirmLoading = ref(false)
 const handleConfirm = async () => {
   if (dialog.value.beforeConfirm) {
-    confirmLoading.value = true;
-    const res = await dialog.value.beforeConfirm();
-    confirmLoading.value = false;
-    if (!res) return;
+    confirmLoading.value = true
+    const res = await dialog.value.beforeConfirm()
+    confirmLoading.value = false
+    if (!res) return
   }
-  emit("confirm");
-  close();
-};
-const cancelLoading = ref(false);
+  emit('confirm')
+  close()
+}
+const cancelLoading = ref(false)
 const handleCancel = async () => {
   if (dialog.value.beforeCancel) {
-    cancelLoading.value = true;
-    const res = await dialog.value.beforeCancel();
-    cancelLoading.value = false;
-    if (!res) return;
+    cancelLoading.value = true
+    const res = await dialog.value.beforeCancel()
+    cancelLoading.value = false
+    if (!res) return
   }
-  emit("cancel");
-  close();
-};
+  emit('cancel')
+  close()
+}
 
 onMounted(() => {
   watch(
     () => props.modelValue,
     (val) => {
       if (val) {
-        open();
+        open()
       } else {
-        close();
+        close()
       }
     },
     {
       immediate: true,
     }
-  );
-});
+  )
+})
 
 defineExpose({
   open,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-dialog {
+@import '../../style/index.scss';
+.dui-dialog {
   position: fixed;
   top: 0;
   left: 0;
@@ -263,7 +262,7 @@ defineExpose({
       :not(:last-child)::after {
         transform: scaleX(0.5);
         border-radius: 0;
-        content: " ";
+        content: ' ';
         width: 1px;
         height: 100%;
         position: absolute;

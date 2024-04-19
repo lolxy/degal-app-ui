@@ -3,8 +3,7 @@
     :class="cls"
     :style="{
       borderWidth: border ? '1px' : '0',
-    }"
-  >
+    }">
     <!-- cover -->
     <slot name="cover" />
 
@@ -12,8 +11,7 @@
     <view
       v-if="$slots.header || $slots.title || $slots.extra || title || extra"
       :class="`${prefixCls}-header`"
-      :style="headerStyle"
-    >
+      :style="headerStyle">
       <!-- slot -->
       <slot name="header" v-if="$slots.header" />
       <block v-else>
@@ -37,18 +35,14 @@
     </view>
 
     <!-- footer -->
-    <view
-      v-if="$slots.footer"
-      :class="`${prefixCls}-footer`"
-      :style="footerStyle"
-    >
+    <view v-if="$slots.footer" :class="`${prefixCls}-footer`" :style="footerStyle">
       <slot name="footer" />
     </view>
   </view>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed } from 'vue'
 
 /**
  * 卡片
@@ -76,7 +70,7 @@ const props = defineProps({
    */
   title: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 额外操作
@@ -113,9 +107,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
-const prefixCls = "iui-card";
+const prefixCls = 'dui-card'
 
 const cls = computed(() => [
   prefixCls,
@@ -123,19 +117,19 @@ const cls = computed(() => [
     [`${prefixCls}-border`]: props.border,
     [`${prefixCls}-shadow`]: props.shadow,
   },
-]);
+])
 
 // 事件
-const emits = defineEmits(["extraClick"]);
+const emits = defineEmits(['extraClick'])
 
 const handleExtraClick = () => {
-  emits("extraClick");
-};
+  emits('extraClick')
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-card {
+@import '../../style/index.scss';
+.dui-card {
   border-radius: $border-radius-small;
   border: 1px solid $color-border;
   background-color: $color-bg;

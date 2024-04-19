@@ -1,24 +1,20 @@
 <template>
   <view :class="cls" v-show="innerVisible">
-    <iui-translation ref="maskTranslation" v-if="popupConfig.mask">
+    <dui-translation ref="maskTranslation" v-if="popupConfig.mask">
       <view
         :class="`${prefixCls}-mask`"
         :style="{
           opacity: maskOpacity,
         }"
         @click="handleClickMask"
-        @touchmove.prevent
-      ></view>
-    </iui-translation>
+        @touchmove.prevent></view>
+    </dui-translation>
 
-    <view
-      :class="[`${prefixCls}-container`, `${prefixCls}-container-${direction}`]"
-    >
-      <iui-translation
+    <view :class="[`${prefixCls}-container`, `${prefixCls}-container-${direction}`]">
+      <dui-translation
         ref="containerTranslation"
         :enter="animation[direction].enter"
-        :leave="animation[direction].leave"
-      >
+        :leave="animation[direction].leave">
         <view
           :class="`${prefixCls}-container-content`"
           :style="{
@@ -26,29 +22,21 @@
             height: isVertical ? `${popupConfig.height}px` : '100%',
             width: isHorizontal ? `${popupConfig.width}px` : '100%',
             ...containerStyle,
-          }"
-        >
+          }">
           <view
             v-if="popupConfig.slide"
             :class="`${prefixCls}-handle`"
             @touchstart="popupConfig.slide ? handleTouchStart($event) : null"
             @touchend="popupConfig.slide ? handleTouchEnd($event) : null"
-            @touchmove.prevent="
-              popupConfig.slide ? handleTouchMove($event) : null
-            "
+            @touchmove.prevent="popupConfig.slide ? handleTouchMove($event) : null"
             :style="{
-              height: isVertical
-                ? popupConfig.title
-                  ? '48px'
-                  : '24px'
-                : '100%',
+              height: isVertical ? (popupConfig.title ? '48px' : '24px') : '100%',
               width: isHorizontal ? '48px' : '100%',
               top: direction === 'bottom' ? '0' : 'auto',
               bottom: direction === 'top' ? '0' : 'auto',
               left: direction === 'right' ? '0' : 'auto',
               right: direction === 'left' ? '0' : 'auto',
-            }"
-          ></view>
+            }"></view>
 
           <view :class="`${prefixCls}-title`">
             <view class="text" v-if="popupConfig.title && !$slots.title">
@@ -62,13 +50,13 @@
             <slot />
           </view>
         </view>
-      </iui-translation>
+      </dui-translation>
     </view>
   </view>
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   /**
@@ -83,7 +71,7 @@ const props = defineProps({
    */
   direction: {
     type: String,
-    default: "bottom",
+    default: 'bottom',
   },
   /**
    * 是否显示遮罩层
@@ -141,29 +129,29 @@ const props = defineProps({
   contentStyle: {
     type: Object,
   },
-});
+})
 
-const innerVisible = ref(props.modelValue);
+const innerVisible = ref(props.modelValue)
 
-const prefixCls = "iui-popup";
-const cls = computed(() => [prefixCls]);
+const prefixCls = 'dui-popup'
+const cls = computed(() => [prefixCls])
 
-const emit = defineEmits(["update:modelValue", "close", "open"]);
+const emit = defineEmits(['update:modelValue', 'close', 'open'])
 
 // 滑动关闭
-const startPoint = ref();
-const endPoint = ref();
+const startPoint = ref()
+const endPoint = ref()
 
 const handleClose = () => {
-  innerVisible.value = false;
-  emit("update:modelValue", false);
-  emit("close");
+  innerVisible.value = false
+  emit('update:modelValue', false)
+  emit('close')
 
   if (popupConfig.value.slide) {
-    startPoint.value = null;
-    endPoint.value = null;
+    startPoint.value = null
+    endPoint.value = null
   }
-};
+}
 
 const popupConfig = ref({
   mask: props.mask,
@@ -175,201 +163,196 @@ const popupConfig = ref({
   width: props.width,
   title: props.title,
   onClose: handleClose,
-});
+})
 
 const direction = computed(() => {
-  return popupConfig.value.direction;
-});
+  return popupConfig.value.direction
+})
 
 // 是否上下布局
 const isVertical = computed(() => {
-  return direction.value === "top" || direction.value === "bottom";
-});
+  return direction.value === 'top' || direction.value === 'bottom'
+})
 
 // 是否左右布局
 const isHorizontal = computed(() => {
-  return direction.value === "left" || direction.value === "right";
-});
+  return direction.value === 'left' || direction.value === 'right'
+})
 
-const containerTranslation = ref();
+const containerTranslation = ref()
 
-const maskTranslation = ref();
+const maskTranslation = ref()
 const handleClickMask = () => {
   if (props.maskClosable) {
-    close();
+    close()
   }
-};
+}
 
 // 遮罩透明度
 const maskOpacity = computed(() => {
   if (popupConfig.value.slide) {
     if (isVertical.value) {
-      return (
-        (popupConfig.value.height - transY.value) / popupConfig.value.height
-      );
+      return (popupConfig.value.height - transY.value) / popupConfig.value.height
     } else {
-      return (popupConfig.value.width - transX.value) / popupConfig.value.width;
+      return (popupConfig.value.width - transX.value) / popupConfig.value.width
     }
   }
-  return 1;
-});
+  return 1
+})
 
 const close = async () => {
-  if (!innerVisible.value) return;
+  if (!innerVisible.value) return
 
-  Promise.all([
-    maskTranslation.value?.leave(),
-    containerTranslation.value.leave(),
-  ]).then(() => {
-    handleClose();
-  });
-};
+  Promise.all([maskTranslation.value?.leave(), containerTranslation.value.leave()]).then(() => {
+    handleClose()
+  })
+}
 
 onMounted(() => {
   watch(
     () => props.modelValue,
     (val) => {
       if (val) {
-        open();
+        open()
       } else {
-        close();
+        close()
       }
     },
     {
       immediate: true,
     }
-  );
-});
+  )
+})
 
 // 通过方法打开
 const open = (params) => {
   // 传入参数覆盖默认参数
-  popupConfig.value = Object.assign(popupConfig.value, params);
+  popupConfig.value = Object.assign(popupConfig.value, params)
 
   if (props.mask) {
-    maskTranslation.value?.enter();
+    maskTranslation.value?.enter()
   }
 
   containerTranslation.value.enter().then(() => {
-    innerVisible.value = true;
-    emit("update:modelValue", true);
-    emit("open");
-  });
-};
+    innerVisible.value = true
+    emit('update:modelValue', true)
+    emit('open')
+  })
+}
 
 const transY = computed(() => {
-  if (direction.value === "bottom") {
-    const distance = endPoint.value?.y - startPoint.value?.y;
-    return distance > 0 ? distance : 0;
+  if (direction.value === 'bottom') {
+    const distance = endPoint.value?.y - startPoint.value?.y
+    return distance > 0 ? distance : 0
   }
 
-  if (direction.value === "top") {
-    const distance = startPoint.value?.y - endPoint.value?.y;
-    return distance > 0 ? -distance : 0;
+  if (direction.value === 'top') {
+    const distance = startPoint.value?.y - endPoint.value?.y
+    return distance > 0 ? -distance : 0
   }
-  return 0;
-});
+  return 0
+})
 
 const transX = computed(() => {
-  if (direction.value === "left") {
-    const distance = startPoint.value?.x - endPoint.value?.x;
-    return distance > 0 ? -distance : 0;
+  if (direction.value === 'left') {
+    const distance = startPoint.value?.x - endPoint.value?.x
+    return distance > 0 ? -distance : 0
   }
 
-  if (direction.value === "right") {
-    const distance = endPoint.value?.x - startPoint.value?.x;
-    return distance > 0 ? distance : 0;
+  if (direction.value === 'right') {
+    const distance = endPoint.value?.x - startPoint.value?.x
+    return distance > 0 ? distance : 0
   }
-  return 0;
-});
+  return 0
+})
 
 const handleTouchStart = (e) => {
   startPoint.value = {
     x: e.touches[0].pageX,
     y: e.touches[0].pageY,
-  };
-};
+  }
+}
 
 const handleTouchEnd = () => {
-  if (!endPoint.value || !startPoint.value) return;
+  if (!endPoint.value || !startPoint.value) return
   switch (direction.value) {
-    case "bottom":
+    case 'bottom':
       if (endPoint.value.y - startPoint.value.y > 100) {
-        close();
+        close()
       } else {
-        endPoint.value = null;
+        endPoint.value = null
       }
-      break;
-    case "top":
+      break
+    case 'top':
       if (startPoint.value.y - endPoint.value.y > 100) {
-        close();
+        close()
       } else {
-        endPoint.value = null;
+        endPoint.value = null
       }
-      break;
-    case "left":
+      break
+    case 'left':
       if (startPoint.value.x - endPoint.value.x > 100) {
-        close();
+        close()
       } else {
-        endPoint.value = null;
+        endPoint.value = null
       }
-      break;
-    case "right":
+      break
+    case 'right':
       if (endPoint.value.x - startPoint.value.x > 100) {
-        close();
+        close()
       } else {
-        endPoint.value = null;
+        endPoint.value = null
       }
-      break;
+      break
     default:
-      break;
+      break
   }
-};
+}
 
-let pause = false;
+let pause = false
 const handleTouchMove = (e) => {
-  if (pause) return;
+  if (pause) return
 
   endPoint.value = {
     x: e.touches[0].pageX,
     y: e.touches[0].pageY,
-  };
+  }
 
-  pause = true;
+  pause = true
   setTimeout(() => {
-    pause = false;
-  }, 50);
-};
+    pause = false
+  }, 50)
+}
 
 // 各方向动画
 const animation = {
   bottom: {
-    enter: "slideInUp",
-    leave: "slideOutDown",
+    enter: 'slideInUp',
+    leave: 'slideOutDown',
   },
   top: {
-    enter: "slideInDown",
-    leave: "slideOutUp",
+    enter: 'slideInDown',
+    leave: 'slideOutUp',
   },
   left: {
-    enter: "slideInLeft",
-    leave: "slideOutLeft",
+    enter: 'slideInLeft',
+    leave: 'slideOutLeft',
   },
   right: {
-    enter: "slideInRight",
-    leave: "slideOutRight",
+    enter: 'slideInRight',
+    leave: 'slideOutRight',
   },
-};
+}
 
 defineExpose({
   open,
   close,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-popup {
+@import '../../style/index.scss';
+.dui-popup {
   position: fixed;
   z-index: 1000;
   height: 100%;
@@ -423,7 +406,7 @@ defineExpose({
       top: 0;
       left: 0;
 
-      .iui-popup-container-content {
+      .dui-popup-container-content {
         height: 100%;
       }
     }
@@ -433,7 +416,7 @@ defineExpose({
       top: 0;
       right: 0;
 
-      .iui-popup-container-content {
+      .dui-popup-container-content {
         height: 100%;
       }
     }

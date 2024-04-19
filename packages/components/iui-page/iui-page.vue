@@ -5,16 +5,16 @@
         <slot name="navbar" />
       </view>
     </template>
-    <iui-spin :loading="loading" :tip="loadingTip" fullScreen>
+    <dui-spin :loading="loading" :tip="loadingTip" fullScreen>
       <view :class="`${prefixCls}-content`">
         <slot />
       </view>
-    </iui-spin>
+    </dui-spin>
   </view>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed } from 'vue'
 
 const props = defineProps({
   /**
@@ -29,7 +29,7 @@ const props = defineProps({
    */
   loadingTip: {
     type: String,
-    default: "加载中",
+    default: '加载中',
   },
   /**
    * 底部安全区
@@ -38,20 +38,20 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-});
+})
 
-const prefixCls = "iui-page";
+const prefixCls = 'dui-page'
 
 const cls = computed(() => [
   prefixCls,
   {
     [`${prefixCls}-safe-area-bottom`]: props.safeBottom,
   },
-]);
+])
 </script>
 
 <style lang="scss" scoped>
-.iui-page {
+.dui-page {
   width: 100%;
   height: -webkit-fill-available;
 

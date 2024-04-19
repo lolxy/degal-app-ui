@@ -9,18 +9,16 @@
     @getphonenumber="getPhoneNumber"
     @opensetting="openSetting"
     @launchapp="launchApp"
-    @error="openTypeError"
-  >
+    @error="openTypeError">
     <view :class="`${prefixCls}-content`">
       <template v-if="props.icon || $slots.icon || props.loading">
         <view
           :class="`${prefixCls}-icon`"
           :style="{
             marginRight: onlyIconBtn ? 0 : '4px',
-          }"
-        >
+          }">
           <slot v-if="$slots.icon" name="icon" />
-          <iui-icon v-else-if="props.icon" :name="props.icon" :size="18" />
+          <dui-icon v-else-if="props.icon" :name="props.icon" :size="18" />
           <view v-else class="loading"></view>
         </view>
       </template>
@@ -30,9 +28,9 @@
 </template>
 
 <script setup>
-import { computed, useSlots } from "vue";
-import IuiIcon from "../iui-icon/iui-icon.vue";
-import { isNumber } from "../../helper/is";
+import { computed, useSlots } from 'vue'
+import IuiIcon from '../dui-icon/dui-icon.vue'
+import { isNumber } from '../../helper/is'
 
 const props = defineProps({
   // 通用属性
@@ -51,7 +49,7 @@ const props = defineProps({
    */
   shape: {
     type: String,
-    default: "square",
+    default: 'square',
   },
   /**
    * 加载中
@@ -74,7 +72,7 @@ const props = defineProps({
    */
   size: {
     type: [String, Number],
-    default: "large",
+    default: 'large',
   },
   /**
    * 按钮状态
@@ -82,7 +80,7 @@ const props = defineProps({
    */
   status: {
     type: String,
-    default: "normal",
+    default: 'normal',
   },
   /**
    * 内联
@@ -105,20 +103,20 @@ const props = defineProps({
   openType: {
     type: String,
   },
-});
+})
 
-const prefixCls = "iui-button";
+const prefixCls = 'dui-button'
 
-const slots = useSlots();
+const slots = useSlots()
 
 // 仅图标按钮
 const onlyIconBtn = computed(() => {
-  return (props.icon || slots.icon) && !slots.default;
-});
+  return (props.icon || slots.icon) && !slots.default
+})
 
 const cls = computed(() => [
   prefixCls,
-  `${prefixCls}-${props.type || "secondary"}-${props.status}`,
+  `${prefixCls}-${props.type || 'secondary'}-${props.status}`,
   `${prefixCls}-shape-${props.shape}`,
   `${prefixCls}-size-${props.size}`,
   {
@@ -127,69 +125,63 @@ const cls = computed(() => [
     [`${prefixCls}-inline`]: props.inline,
     [`${prefixCls}-icon-size-${props.size}`]: onlyIconBtn.value,
   },
-]);
+])
 
 const style = computed(() => {
   if (isNumber(props.size)) {
     return {
       height: `${props.size}px`,
-      width: onlyIconBtn.value ? `${props.size}px` : "inherit",
+      width: onlyIconBtn.value ? `${props.size}px` : 'inherit',
       fontSize: `${props.size / 3}px`,
-    };
+    }
   }
-});
+})
 
-const emits = defineEmits([
-  "click",
-  "getphonenumber",
-  "opensetting",
-  "launchapp",
-  "error",
-]);
+const emits = defineEmits(['click', 'getphonenumber', 'opensetting', 'launchapp', 'error'])
 
 // 点击事件
 const handleClick = (e) => {
   if (props.disabled || props.loading) {
-    return;
+    return
   }
-  emits("click", e);
-};
+  emits('click', e)
+}
 
 // 微信开放能力（获取手机号）
 const getPhoneNumber = (e) => {
-  emits("getphonenumber", e);
-};
+  emits('getphonenumber', e)
+}
 // 微信开放能力（打开设置面板）
 const openSetting = (e) => {
-  emits("opensetting", e);
-};
+  emits('opensetting', e)
+}
 // 微信开放能力（打开App成功回调）
 const launchApp = (e) => {
-  emits("launchapp", e);
-};
+  emits('launchapp', e)
+}
 // 微信开放能力（当使用开放能力时，发生错误的回调）
 const openTypeError = (e) => {
-  emits("error", e);
-};
+  emits('error', e)
+}
 
 // 获取inline padding
 const inlinePadding = computed(() => {
   if (!slots.default) {
-    return "8px";
+    return '8px'
   }
 
-  return "16px";
-});
+  return '16px'
+})
 </script>
 
 <script>
 export default {
-  name: "iui-button",
-};
+  name: 'dui-button',
+}
 </script>
 
 <style lang="scss" scoped>
-@import "./style//token.scss";
+@import './style//token.scss';
 
 // 按钮大小
 @mixin btn-size {
@@ -261,33 +253,20 @@ export default {
     border: 1px solid map-get($tokens, btn-#{$type}-#{$status}-border-color);
 
     &:active {
-      border-color: map-get(
-        $tokens,
-        btn-#{$type}-#{$status}-active-border-color
-      );
-      background-color: map-get(
-        $tokens,
-        btn-#{$type}-#{$status}-active-bg-color
-      );
+      border-color: map-get($tokens, btn-#{$type}-#{$status}-active-border-color);
+      background-color: map-get($tokens, btn-#{$type}-#{$status}-active-bg-color);
     }
 
-    &.iui-button-disabled,
-    &.iui-button-loading {
+    &.dui-button-disabled,
+    &.dui-button-loading {
       color: map-get($tokens, btn-#{$type}-#{$status}-disabled-text-color);
-      background-color: map-get(
-        $tokens,
-        btn-#{$type}-#{$status}-disabled-bg-color
-      );
-      border-color: map-get(
-        $tokens,
-        btn-#{$type}-#{$status}-disabled-border-color
-      );
+      background-color: map-get($tokens, btn-#{$type}-#{$status}-disabled-bg-color);
+      border-color: map-get($tokens, btn-#{$type}-#{$status}-disabled-border-color);
 
       .loading {
         width: 10px;
         height: 10px;
-        border: 1px solid
-          map-get($tokens, btn-#{$type}-#{$status}-disabled-text-color);
+        border: 1px solid map-get($tokens, btn-#{$type}-#{$status}-disabled-text-color);
         border-top-color: transparent;
         border-radius: 100%;
         animation: spin infinite 0.75s linear;
@@ -296,7 +275,7 @@ export default {
   }
 }
 
-.iui-button {
+.dui-button {
   margin: 0;
   padding: 0 $size-2;
   width: 100%;
@@ -342,20 +321,20 @@ export default {
     align-items: center;
   }
 
-  @include btn-style("primary", "normal");
-  @include btn-style("primary", "success");
-  @include btn-style("primary", "danger");
-  @include btn-style("primary", "warning");
+  @include btn-style('primary', 'normal');
+  @include btn-style('primary', 'success');
+  @include btn-style('primary', 'danger');
+  @include btn-style('primary', 'warning');
 
-  @include btn-style("secondary", "normal");
-  @include btn-style("secondary", "success");
-  @include btn-style("secondary", "danger");
-  @include btn-style("secondary", "warning");
+  @include btn-style('secondary', 'normal');
+  @include btn-style('secondary', 'success');
+  @include btn-style('secondary', 'danger');
+  @include btn-style('secondary', 'warning');
 
-  @include btn-style("outline", "normal");
-  @include btn-style("outline", "success");
-  @include btn-style("outline", "danger");
-  @include btn-style("outline", "warning");
+  @include btn-style('outline', 'normal');
+  @include btn-style('outline', 'success');
+  @include btn-style('outline', 'danger');
+  @include btn-style('outline', 'warning');
 
   &::after {
     display: none;

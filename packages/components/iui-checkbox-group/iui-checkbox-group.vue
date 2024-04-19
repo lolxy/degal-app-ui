@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { computed, provide, ref } from "vue";
+import { computed, provide, ref } from 'vue'
 
 const props = defineProps({
   /**
@@ -23,56 +23,56 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
 // 选中值
-const checkedValues = ref([]);
+const checkedValues = ref([])
 
-const prefixCls = "iui-checkbox-group";
+const prefixCls = 'dui-checkbox-group'
 
-const cls = computed(() => [prefixCls]);
+const cls = computed(() => [prefixCls])
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(['update:modelValue', 'change'])
 
 // 供子组件监听状态
 // 全选
-const isCheckedAll = ref(false);
+const isCheckedAll = ref(false)
 // 反选
-const isReverseChecked = ref(false);
+const isReverseChecked = ref(false)
 
 // 选中值变化
 const handleCheckboxChange = (value) => {
   if (checkedValues.value.includes(value)) {
-    checkedValues.value = checkedValues.value.filter((item) => item !== value);
+    checkedValues.value = checkedValues.value.filter((item) => item !== value)
   } else {
-    checkedValues.value.push(value);
+    checkedValues.value.push(value)
   }
-  emit("update:modelValue", checkedValues.value);
-  emit("change", checkedValues.value);
-};
+  emit('update:modelValue', checkedValues.value)
+  emit('change', checkedValues.value)
+}
 
-provide("checkbox-group", {
+provide('checkbox-group', {
   justify: props.justify,
   isCheckedAll,
   isReverseChecked,
   checkedValues,
   handleCheckboxChange,
-});
+})
 
 const checkAll = () => {
-  isCheckedAll.value = !isCheckedAll.value;
-};
+  isCheckedAll.value = !isCheckedAll.value
+}
 
 const reverseChecked = () => {
-  isReverseChecked.value = !isReverseChecked.value;
-};
+  isReverseChecked.value = !isReverseChecked.value
+}
 
 defineExpose({
   isCheckedAll,
   isReverseChecked,
   checkAll,
   reverseChecked,
-});
+})
 </script>
 
 <style lang="scss" scoped></style>

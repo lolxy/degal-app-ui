@@ -1,7 +1,7 @@
 <template>
   <view :class="cls">
     <view @click="handleClick">
-      <iui-cell :label="label" :icon="icon" :extra="extra">
+      <dui-cell :label="label" :icon="icon" :extra="extra">
         <template #extra>
           <view
             :class="[
@@ -9,30 +9,26 @@
               {
                 rotate: expand,
               },
-            ]"
-          >
-            <iui-icon name="down"></iui-icon>
+            ]">
+            <dui-icon name="down"></dui-icon>
           </view>
         </template>
-      </iui-cell>
+      </dui-cell>
     </view>
 
     <view
       :class="[`${prefixCls}-content`]"
       :style="{
         height: expand ? `${contentHeight}px` : 0,
-      }"
-    >
+      }">
       <view
         :class="`${prefixCls}-content-container`"
         :style="[
           contentStyle,
           {
-            borderTop:
-              group && isSplit ? 'none' : '1rpx solid var(--iui-gray-2)',
+            borderTop: group && isSplit ? 'none' : '1rpx solid var(--dui-gray-2)',
           },
-        ]"
-      >
+        ]">
         <slot />
       </view>
     </view>
@@ -40,15 +36,8 @@
 </template>
 
 <script setup>
-import {
-  computed,
-  onMounted,
-  ref,
-  getCurrentInstance,
-  watch,
-  nextTick,
-} from "vue";
-import { getRect } from "../../helper/rect";
+import { computed, onMounted, ref, getCurrentInstance, watch, nextTick } from 'vue'
+import { getRect } from '../../helper/rect'
 
 const props = defineProps({
   /**
@@ -63,7 +52,7 @@ const props = defineProps({
    */
   label: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 是否展开
@@ -91,26 +80,26 @@ const props = defineProps({
   extra: {
     type: String,
   },
-});
+})
 
 // class
-const prefixCls = "iui-collapse";
-const cls = computed(() => [prefixCls]);
+const prefixCls = 'dui-collapse'
+const cls = computed(() => [prefixCls])
 
 // 展开状态
-const expand = ref(props.expand);
-const contentHeight = ref(0);
+const expand = ref(props.expand)
+const contentHeight = ref(0)
 
-const emit = defineEmits(["update:expand", "change"]);
+const emit = defineEmits(['update:expand', 'change'])
 
-const instance = getCurrentInstance();
-const uid = props.name || instance.uid;
+const instance = getCurrentInstance()
+const uid = props.name || instance.uid
 
 // 是否在group中
-const group = instance.provides["collapse-group"];
+const group = instance.provides['collapse-group']
 
 // list是否开启分割线
-const isSplit = group?.props?.split;
+const isSplit = group?.props?.split
 
 // 若开启手风琴模式，则监听activeKey
 if (group && group.props.accordion) {
@@ -118,47 +107,47 @@ if (group && group.props.accordion) {
     () => group?.exposed?.activeKey.value,
     (val) => {
       if (val === uid) {
-        expand.value = true;
+        expand.value = true
       } else {
-        expand.value = false;
+        expand.value = false
       }
     }
-  );
+  )
 }
 
 const handleClick = () => {
   if (group) {
-    const { setActiveKey } = group?.exposed;
-    setActiveKey(uid);
+    const { setActiveKey } = group?.exposed
+    setActiveKey(uid)
   }
-  expand.value = !expand.value;
+  expand.value = !expand.value
 
-  emit("update:expand", expand.value);
-  emit("change", expand.value);
-};
+  emit('update:expand', expand.value)
+  emit('change', expand.value)
+}
 
 const setDefaultActiveKey = () => {
   if (group) {
-    const { activeKey } = group?.exposed;
+    const { activeKey } = group?.exposed
     if (activeKey.value === uid) {
-      expand.value = true;
+      expand.value = true
     }
   }
-};
+}
 
 onMounted(() => {
   getRect(instance, `.${prefixCls}-content-container`).then((res) => {
-    contentHeight.value = res.height;
-  });
+    contentHeight.value = res.height
+  })
 
-  setDefaultActiveKey();
-});
+  setDefaultActiveKey()
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
-.iui-collapse {
+.dui-collapse {
   &-action-icon {
     color: $color-text-lighten;
     transition: all 150ms linear;

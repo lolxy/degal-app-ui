@@ -7,17 +7,11 @@
           [`${prefixCls}-btn-disabled`]: isNumber(min) && innerValue === min,
         },
       ]"
-      @click="handleClickReduce"
-    >
-      <iui-icon name="minus"></iui-icon>
+      @click="handleClickReduce">
+      <dui-icon name="minus"></dui-icon>
     </view>
     <view :class="`${prefixCls}-value`">
-      <input
-        :value="calcValue"
-        class="input"
-        type="number"
-        :disabled="!input || disabled"
-      />
+      <input :value="calcValue" class="input" type="number" :disabled="!input || disabled" />
     </view>
     <view
       :class="[
@@ -26,16 +20,15 @@
           [`${prefixCls}-btn-disabled`]: isNumber(max) && innerValue === max,
         },
       ]"
-      @click="handleClickPlus"
-    >
-      <iui-icon name="plus"></iui-icon>
+      @click="handleClickPlus">
+      <dui-icon name="plus"></dui-icon>
     </view>
   </view>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { isNumber } from "../../helper/is";
+import { computed, ref } from 'vue'
+import { isNumber } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -70,7 +63,7 @@ const props = defineProps({
    */
   type: {
     type: String,
-    default: "default",
+    default: 'default',
   },
   /**
    * 禁用
@@ -93,9 +86,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
-const prefixCls = "iui-stepper";
+const prefixCls = 'dui-stepper'
 
 const cls = computed(() => [
   prefixCls,
@@ -103,42 +96,42 @@ const cls = computed(() => [
     [`${prefixCls}-${props.type}`]: props.type,
     [`${prefixCls}-disabled`]: props.disabled,
   },
-]);
+])
 
-const innerValue = ref(props.modelValue);
+const innerValue = ref(props.modelValue)
 
 // 计算小数点
 const calcValue = computed(() => {
-  const value = innerValue.value;
-  const decimal = props.decimal;
-  if (decimal <= 0) return value;
-  return value.toFixed(decimal);
-});
+  const value = innerValue.value
+  const decimal = props.decimal
+  if (decimal <= 0) return value
+  return value.toFixed(decimal)
+})
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const handleClickPlus = () => {
-  if (props.disabled) return;
-  const value = innerValue.value + props.step;
-  if (isNumber(props.max) && value > props.max) return;
-  innerValue.value = value;
-  emit("update:modelValue", value);
-  emit("change", value);
-};
+  if (props.disabled) return
+  const value = innerValue.value + props.step
+  if (isNumber(props.max) && value > props.max) return
+  innerValue.value = value
+  emit('update:modelValue', value)
+  emit('change', value)
+}
 
 const handleClickReduce = () => {
-  if (props.disabled) return;
-  const value = innerValue.value - props.step;
-  if (isNumber(props.min) && value < props.min) return;
-  innerValue.value = value;
-  emit("update:modelValue", value);
-  emit("change", value);
-};
+  if (props.disabled) return
+  const value = innerValue.value - props.step
+  if (isNumber(props.min) && value < props.min) return
+  innerValue.value = value
+  emit('update:modelValue', value)
+  emit('change', value)
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-stepper {
+@import '../../style/index.scss';
+.dui-stepper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -181,7 +174,7 @@ const handleClickReduce = () => {
   &-disabled {
     opacity: 0.7;
 
-    .iui-stepper-btn {
+    .dui-stepper-btn {
       color: $color-text-lighten;
       cursor: not-allowed;
       pointer-events: none;
@@ -189,7 +182,7 @@ const handleClickReduce = () => {
   }
 
   &-outline {
-    .iui-stepper-btn {
+    .dui-stepper-btn {
       border: 1px solid $color-border;
       background-color: $color-bg;
 
@@ -204,7 +197,7 @@ const handleClickReduce = () => {
       }
     }
 
-    .iui-stepper-value {
+    .dui-stepper-value {
       .input {
         border: 1px solid $color-border;
         border-left: none;
@@ -216,12 +209,12 @@ const handleClickReduce = () => {
   }
 
   &-round {
-    .iui-stepper-btn {
+    .dui-stepper-btn {
       border-radius: $border-radius-round;
       background-color: $color-bg-secondary;
     }
 
-    .iui-stepper-value {
+    .dui-stepper-value {
       .input {
         margin: 0;
         background-color: transparent;

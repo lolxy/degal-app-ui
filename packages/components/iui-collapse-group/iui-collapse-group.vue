@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { computed, ref, getCurrentInstance, provide } from "vue";
+import { computed, ref, getCurrentInstance, provide } from 'vue'
 
 const props = defineProps({
   /**
@@ -13,7 +13,7 @@ const props = defineProps({
    */
   activeKey: {
     type: [String, Number],
-    default: "",
+    default: '',
   },
   /**
    * 手风琴模式
@@ -29,42 +29,42 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-});
+})
 
-const prefixCls = "iui-collapse-group";
+const prefixCls = 'dui-collapse-group'
 
 const cls = computed(() => [
   prefixCls,
   {
     [`${prefixCls}-split`]: props.split,
   },
-]);
+])
 
-const instance = getCurrentInstance();
+const instance = getCurrentInstance()
 
-provide("collapse-group", instance);
+provide('collapse-group', instance)
 
-const activeKey = ref(props.activeKey);
+const activeKey = ref(props.activeKey)
 
 const setActiveKey = (key) => {
-  activeKey.value = key;
-};
+  activeKey.value = key
+}
 
 defineExpose({
   activeKey,
   setActiveKey,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
-.iui-collapse-group {
+.dui-collapse-group {
   width: 100%;
 
   &-split {
     /* #ifndef MP */
-    :deep(:not(:last-child)) .iui-cell {
+    :deep(:not(:last-child)) .dui-cell {
       border-bottom: 1rpx solid $color-border-dark;
     }
     /* #endif */

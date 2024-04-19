@@ -3,8 +3,7 @@
     :class="cls"
     :style="{
       padding: inForm ? '0' : '18px',
-    }"
-  >
+    }">
     <textarea
       :auto-height="!height"
       :class="`${prefixCls}-input`"
@@ -16,26 +15,23 @@
         height: `${height}px`,
       }"
       :maxlength="maxlength"
-      placeholder-class="iui-textarea-placeholder"
+      placeholder-class="dui-textarea-placeholder"
       @input="handleInput"
       @blur="handleBlur"
-      @focus="$emit('focus', $event)"
-    />
-    <view :class="`${prefixCls}-statistic`" v-if="showLimit">
-      {{ innerValue.length || 0 }}/{{ maxlength }}
-    </view>
+      @focus="$emit('focus', $event)" />
+    <view :class="`${prefixCls}-statistic`" v-if="showLimit"> {{ innerValue.length || 0 }}/{{ maxlength }} </view>
   </view>
 </template>
 
 <script setup>
-import { computed, inject, ref } from "vue";
+import { computed, inject, ref } from 'vue'
 const props = defineProps({
   /**
    * 值
    */
   modelValue: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 禁用
@@ -56,7 +52,7 @@ const props = defineProps({
    */
   placeholder: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 显示字数统计
@@ -77,46 +73,46 @@ const props = defineProps({
   placeholderStyle: {
     type: Object,
     default: () => ({
-      color: "#c9cdd4",
-      fontSize: "15px",
+      color: '#c9cdd4',
+      fontSize: '15px',
     }),
   },
-});
+})
 
-const prefixCls = "iui-textarea";
+const prefixCls = 'dui-textarea'
 
 const cls = computed(() => [
   prefixCls,
   {
     [`${prefixCls}-disabled`]: props.disabled,
   },
-]);
+])
 
-const emit = defineEmits(["update:modelValue", "input", "blur", "focus"]);
+const emit = defineEmits(['update:modelValue', 'input', 'blur', 'focus'])
 
-const innerValue = ref(props.modelValue);
+const innerValue = ref(props.modelValue)
 
-const formItem = inject("formItem");
+const formItem = inject('formItem')
 
 const handleInput = (event) => {
-  innerValue.value = event.detail.value;
-  emit("update:modelValue", innerValue.value);
-  emit("input", event);
-};
+  innerValue.value = event.detail.value
+  emit('update:modelValue', innerValue.value)
+  emit('input', event)
+}
 
 const handleBlur = (event) => {
-  emit("blur", event);
+  emit('blur', event)
   if (formItem) {
-    formItem.triggerEvent("blur");
+    formItem.triggerEvent('blur')
   }
-};
+}
 
 // 表单中
-const inForm = inject("inForm");
+const inForm = inject('inForm')
 </script>
 
 <style lang="scss" scoped>
-.iui-textarea {
+.dui-textarea {
   padding: 18px;
   display: flex;
   flex-direction: column;
@@ -133,7 +129,7 @@ const inForm = inject("inForm");
   }
 
   &-disabled {
-    .iui-textarea-input {
+    .dui-textarea-input {
       color: $color-text-lighten;
       cursor: not-allowed;
     }
@@ -150,7 +146,7 @@ const inForm = inject("inForm");
 </style>
 
 <style lang="scss">
-.iui-textarea-placeholder {
+.dui-textarea-placeholder {
   color: $color-text-input-placeholder;
   font-size: 15px;
 }

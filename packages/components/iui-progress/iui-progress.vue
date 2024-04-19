@@ -5,18 +5,15 @@
         :class="`${prefixCls}-active`"
         :style="{
           width: `${left}px`,
-        }"
-      ></view>
+        }"></view>
     </view>
-    <view :class="`${prefixCls}-percent`" v-if="percent">
-      {{ props.modelValue }}%
-    </view>
+    <view :class="`${prefixCls}-percent`" v-if="percent"> {{ props.modelValue }}% </view>
   </view>
 </template>
 
 <script setup>
-import { ref, getCurrentInstance, onMounted, computed } from "vue";
-import { getRect } from "../../helper/rect";
+import { ref, getCurrentInstance, onMounted, computed } from 'vue'
+import { getRect } from '../../helper/rect'
 
 const props = defineProps({
   /**
@@ -45,29 +42,29 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: "#165dff",
+    default: '#165dff',
   },
-});
+})
 
-const prefixCls = "iui-progress";
-const instance = getCurrentInstance();
+const prefixCls = 'dui-progress'
+const instance = getCurrentInstance()
 
-const lineWidth = ref(0);
+const lineWidth = ref(0)
 
 const left = computed(() => {
-  return props.modelValue * (lineWidth.value / 100);
-});
+  return props.modelValue * (lineWidth.value / 100)
+})
 
 onMounted(() => {
-  getRect(instance, "#line").then((rect) => {
-    lineWidth.value = rect.width;
-  });
-});
+  getRect(instance, '#line').then((rect) => {
+    lineWidth.value = rect.width
+  })
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-progress {
+@import '../../style/index.scss';
+.dui-progress {
   display: flex;
   align-items: center;
 

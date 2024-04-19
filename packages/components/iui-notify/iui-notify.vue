@@ -7,8 +7,7 @@
       color: props.color?.color,
       height: visiable ? `${props.height}px` : 0,
       position: props.fixed ? 'fixed' : 'relative',
-    }"
-  >
+    }">
     <view
       :class="[
         `${prefixCls}-mask`,
@@ -17,8 +16,7 @@
           [`${prefixCls}-leaving`]: preNotifyNeedToLeave,
         },
       ]"
-      v-if="preNotifyNeedToLeave"
-    >
+      v-if="preNotifyNeedToLeave">
       <slot name="content" :msg="preNotify.content" v-if="$slots.content" />
       <text v-else>{{ preNotify.content }}</text>
     </view>
@@ -31,7 +29,7 @@
 </template>
 
 <script setup>
-import { computed, ref, useSlots } from "vue";
+import { computed, ref, useSlots } from 'vue'
 
 const props = defineProps({
   /**
@@ -39,7 +37,7 @@ const props = defineProps({
    */
   content: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 是否显示
@@ -61,7 +59,7 @@ const props = defineProps({
    */
   type: {
     type: String,
-    default: "primary",
+    default: 'primary',
   },
   /**
    * 颜色
@@ -85,112 +83,111 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
-const visiable = ref(props.visiable);
+const visiable = ref(props.visiable)
 const notify = ref({
   content: props.content,
   type: props.type,
-});
+})
 
-const slots = useSlots();
+const slots = useSlots()
 
-const prefixCls = "iui-notify";
+const prefixCls = 'dui-notify'
 const cls = computed(() => [
   prefixCls,
   {
-    [`iui-notify-${notify.value.type || "primary"}`]:
-      !props.color || !slots.content,
+    [`dui-notify-${notify.value.type || 'primary'}`]: !props.color || !slots.content,
   },
-]);
+])
 
-const preNotifyNeedToLeave = ref(false);
-const preNotify = ref({});
+const preNotifyNeedToLeave = ref(false)
+const preNotify = ref({})
 
-let timer = null;
+let timer = null
 
-const transitionTime = ref(300);
+const transitionTime = ref(300)
 
 const push = (params) => {
   if (!visiable.value) {
-    notify.value = params;
-    visiable.value = true;
+    notify.value = params
+    visiable.value = true
     timer = setTimeout(() => {
-      visiable.value = false;
-    }, props.timeout);
+      visiable.value = false
+    }, props.timeout)
   } else {
-    clearTimeout(timer);
+    clearTimeout(timer)
 
     if (!notify.value.type || slots.content) {
-      visiable.value = false;
+      visiable.value = false
       setTimeout(() => {
-        notify.value = params;
-        visiable.value = true;
-      }, 300);
-      return;
+        notify.value = params
+        visiable.value = true
+      }, 300)
+      return
     }
 
     // 深拷贝原来的notify
-    visiable.value = false;
-    preNotify.value = JSON.parse(JSON.stringify(notify.value));
-    preNotifyNeedToLeave.value = true;
+    visiable.value = false
+    preNotify.value = JSON.parse(JSON.stringify(notify.value))
+    preNotifyNeedToLeave.value = true
 
     // 让新的notify出现速度慢一点
-    transitionTime.value = 500;
+    transitionTime.value = 500
     setTimeout(() => {
-      transitionTime.value = 300;
-    }, 500);
+      transitionTime.value = 300
+    }, 500)
 
     //  300ms后关闭上一个notify
     setTimeout(() => {
-      preNotifyNeedToLeave.value = false;
-    }, 300);
+      preNotifyNeedToLeave.value = false
+    }, 300)
 
     // 显示新的notify
-    notify.value = params;
+    notify.value = params
     setTimeout(() => {
-      visiable.value = true;
-    }, 150);
+      visiable.value = true
+    }, 150)
 
     // 设置超时
     timer = setTimeout(() => {
-      visiable.value = false;
-    }, props.timeout);
+      visiable.value = false
+    }, props.timeout)
   }
-};
+}
 
 const success = (params) => {
   push({
     ...params,
-    type: "success",
-  });
-};
+    type: 'success',
+  })
+}
 
 const warning = (params) => {
   push({
     ...params,
-    type: "warning",
-  });
-};
+    type: 'warning',
+  })
+}
 
 const error = (params) => {
   push({
     ...params,
-    type: "error",
-  });
-};
+    type: 'error',
+  })
+}
 
 defineExpose({
   push,
   success,
   warning,
   error,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-notify {
+@import '../../style/index.scss';
+.dui-notify {
   width: 100%;
   z-index: 990;
   overflow: hidden;
@@ -236,7 +233,7 @@ defineExpose({
   }
 }
 
-.iui-notify-leaving {
+.dui-notify-leaving {
   animation: slideOut 300ms ease-in-out forwards;
 }
 

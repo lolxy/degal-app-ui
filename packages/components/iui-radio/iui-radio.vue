@@ -6,16 +6,15 @@
         {
           checked: checked,
         },
-      ]"
-    >
+      ]">
     </view>
     <view :class="`${prefixCls}-label`" v-if="label"> {{ label }}</view>
   </view>
 </template>
 
 <script setup>
-import { computed, ref, inject, watch } from "vue";
-import Base64 from "../../helper/base64";
+import { computed, ref, inject, watch } from 'vue'
+import Base64 from '../../helper/base64'
 
 const props = defineProps({
   /**
@@ -30,7 +29,7 @@ const props = defineProps({
    */
   label: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 禁用
@@ -44,7 +43,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: "#165DFF",
+    default: '#165DFF',
   },
 
   /**
@@ -68,20 +67,20 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
-const iconTemplate = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm4.9 6.3L10 13.2s0 .1-.1.1l-.6.7c-.1.1-.2.1-.3.2-.1 0-.3 0-.4-.1l-.6-.7-.1-.1-2.8-2.4c-.2-.2-.2-.5-.1-.7l.6-.7c.2-.2.5-.2.7-.1l2.5 2.1L13.5 6c.2-.2.5-.2.7-.1l.7.6c.1.3.2.6 0 .8z" fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg>`;
+const iconTemplate = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 1c-5 0-9 4-9 9s4 9 9 9 9-4 9-9-4-9-9-9zm4.9 6.3L10 13.2s0 .1-.1.1l-.6.7c-.1.1-.2.1-.3.2-.1 0-.3 0-.4-.1l-.6-.7-.1-.1-2.8-2.4c-.2-.2-.2-.5-.1-.7l.6-.7c.2-.2.5-.2.7-.1l2.5 2.1L13.5 6c.2-.2.5-.2.7-.1l.7.6c.1.3.2.6 0 .8z" fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg>`
 
 const icon = computed(() => {
-  const svg = iconTemplate.replace("currentColor", props.color);
-  const result = `url(data:image/svg+xml;base64,${Base64.encode(svg)})`;
-  return result;
-});
+  const svg = iconTemplate.replace('currentColor', props.color)
+  const result = `url(data:image/svg+xml;base64,${Base64.encode(svg)})`
+  return result
+})
 
 // 父级组件
-const group = inject("radio-group");
+const group = inject('radio-group')
 
-const prefixCls = "iui-radio";
+const prefixCls = 'dui-radio'
 
 const cls = computed(() => [
   prefixCls,
@@ -89,41 +88,41 @@ const cls = computed(() => [
     [`${prefixCls}-disabled`]: props.disabled,
     [`${prefixCls}-justify`]: group?.justify || props.justify,
   },
-]);
+])
 
-const checked = ref(props.checked || props.modelValue);
+const checked = ref(props.checked || props.modelValue)
 
-const value = props.value || props.label;
+const value = props.value || props.label
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(['update:modelValue', 'change'])
 
 const handleClick = () => {
-  if (props.disabled) return;
-  checked.value = !checked.value;
-  emit("update:modelValue", checked.value);
-  emit("change", checked.value);
+  if (props.disabled) return
+  checked.value = !checked.value
+  emit('update:modelValue', checked.value)
+  emit('change', checked.value)
   if (group) {
-    group.handleRadioChange(checked.value ? value : null);
+    group.handleRadioChange(checked.value ? value : null)
   }
-};
+}
 
 if (group) {
-  const { checkedValue } = group;
+  const { checkedValue } = group
   watch(
     () => checkedValue.value,
     () => {
-      checked.value = checkedValue.value[0] === value;
+      checked.value = checkedValue.value[0] === value
     },
     {
       immediate: true,
     }
-  );
+  )
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-radio {
+@import '../../style/index.scss';
+.dui-radio {
   display: flex;
   align-items: center;
   white-space: nowrap;
@@ -153,7 +152,7 @@ if (group) {
     cursor: not-allowed;
     color: $color-text-lighten;
 
-    .iui-radio-icon {
+    .dui-radio-icon {
       border-color: $color-border-lighten;
       background-color: $color-bg-secondary;
     }
@@ -168,7 +167,7 @@ if (group) {
     width: 100%;
     justify-content: space-between;
 
-    .iui-radio-label {
+    .dui-radio-label {
       margin-left: 0;
       margin-right: $size-2;
     }

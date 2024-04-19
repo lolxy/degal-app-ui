@@ -4,44 +4,36 @@
     v-show="innerVisible"
     :style="{
       pointerEvents: toast.mask ? 'auto' : 'none',
-    }"
-  >
-    <iui-translation ref="anim" enter="fadeIn" leave="fadeOut">
+    }">
+    <dui-translation ref="anim" enter="fadeIn" leave="fadeOut">
       <view :class="`${prefixCls}-content`">
         <view
           class="position"
           :style="{
             alignItems: toastPosition,
-          }"
-        >
+          }">
           <view
             class="content"
             :style="{
-              padding:
-                toastIcon || toast.loading ? '12px 16px 16px' : '12px 16px',
-            }"
-          >
+              padding: toastIcon || toast.loading ? '12px 16px 16px' : '12px 16px',
+            }">
             <view class="icon" v-if="toast.type || toast.icon || toast.loading">
-              <iui-icon
-                size="24"
-                :name="toastIcon"
-                v-if="!toast.loading"
-              ></iui-icon>
+              <dui-icon size="24" :name="toastIcon" v-if="!toast.loading"></dui-icon>
               <view class="loading" v-else>
-                <iui-spin color="white"></iui-spin>
+                <dui-spin color="white"></dui-spin>
               </view>
             </view>
             {{ toast.message }}
           </view>
         </view>
       </view>
-    </iui-translation>
+    </dui-translation>
   </view>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { isString } from "../../helper/is";
+import { computed, ref } from 'vue'
+import { isString } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -49,7 +41,7 @@ const props = defineProps({
    */
   message: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 持续时间
@@ -64,7 +56,7 @@ const props = defineProps({
    */
   position: {
     type: String,
-    default: "center",
+    default: 'center',
   },
   /**
    * 图标
@@ -84,7 +76,7 @@ const props = defineProps({
    */
   direction: {
     type: String,
-    default: "vertical",
+    default: 'vertical',
   },
   /**
    * 遮罩
@@ -94,92 +86,88 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
-const toast = ref({});
+const toast = ref({})
 
-const prefixCls = "iui-toast";
-const cls = computed(() => [
-  prefixCls,
-  `${prefixCls}-${toast.value.position}`,
-  `${prefixCls}-${toast.value.direction}`,
-]);
+const prefixCls = 'dui-toast'
+const cls = computed(() => [prefixCls, `${prefixCls}-${toast.value.position}`, `${prefixCls}-${toast.value.direction}`])
 
-const anim = ref();
-const innerVisible = ref(false);
+const anim = ref()
+const innerVisible = ref(false)
 
 // 位置
 const toastPosition = computed(() => {
-  if (toast.value.position === "center") return "center";
-  return toast.value.position === "top" ? "flex-start" : "flex-end";
-});
+  if (toast.value.position === 'center') return 'center'
+  return toast.value.position === 'top' ? 'flex-start' : 'flex-end'
+})
 
 // 图标
 const toastIcon = computed(() => {
-  if (toast.value.icon) return toast.value.icon;
+  if (toast.value.icon) return toast.value.icon
   if (toast.value.type) {
     switch (toast.value.type) {
-      case "success":
-        return "check-circle";
-      case "error":
-        return "close-circle";
-      case "warning":
-        return "warning-circle";
+      case 'success':
+        return 'check-circle'
+      case 'error':
+        return 'close-circle'
+      case 'warning':
+        return 'warning-circle'
     }
   }
-  return "";
-});
+  return ''
+})
 
-let timeout = null;
+let timeout = null
 
 const hide = () => {
   timeout = setTimeout(async () => {
-    await anim.value?.leave();
-    innerVisible.value = false;
-  }, toast.value.duration);
-};
+    await anim.value?.leave()
+    innerVisible.value = false
+  }, toast.value.duration)
+}
 
 const show = async (params) => {
-  clearTimeout(timeout);
-  isString(params) && (params = { message: params });
+  clearTimeout(timeout)
+  isString(params) && (params = { message: params })
   toast.value = {
     ...props,
     ...params,
-  };
+  }
 
-  innerVisible.value = true;
-  await anim.value?.enter();
+  innerVisible.value = true
+  await anim.value?.enter()
 
   if (!toast.value.loading) {
-    hide();
+    hide()
   }
-};
+}
 
 const showLoading = (params) => {
-  isString(params) && (params = { message: params });
+  isString(params) && (params = { message: params })
 
   show({
     ...params,
     loading: true,
     mask: true,
-  });
-};
+  })
+}
 
 const hideLoading = async () => {
-  await anim.value?.leave();
-  innerVisible.value = false;
-};
+  await anim.value?.leave()
+  innerVisible.value = false
+}
 
 defineExpose({
   show,
   showLoading,
   hideLoading,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-toast {
+@import '../../style/index.scss';
+.dui-toast {
   position: fixed;
   z-index: 1000;
   width: 100%;

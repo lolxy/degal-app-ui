@@ -5,23 +5,17 @@
       {
         [`${prefixCls}-collapse`]: expand,
       },
-    ]"
-  >
+    ]">
     <slot />
 
-    <view
-      v-if="action"
-      :class="`${prefixCls}-action`"
-      @click="handleChange"
-      :style="acitonStyle"
-    >
+    <view v-if="action" :class="`${prefixCls}-action`" @click="handleChange" :style="acitonStyle">
       {{ expand ? collapseText : expandText }}
     </view>
   </view>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref } from 'vue'
 const props = defineProps({
   /**
    * 最大显示行数
@@ -42,46 +36,46 @@ const props = defineProps({
    */
   expandText: {
     type: String,
-    default: "展开",
+    default: '展开',
   },
   /**
    * 收起按钮文本
    */
   collapseText: {
     type: String,
-    default: "收起",
+    default: '收起',
   },
-});
+})
 
-const prefixCls = "iui-ellipsis";
+const prefixCls = 'dui-ellipsis'
 
-const expand = ref(false);
+const expand = ref(false)
 
-const emit = defineEmits(["change"]);
+const emit = defineEmits(['change'])
 
 const handleChange = () => {
-  expand.value = !expand.value;
-  emit("change", expand.value);
-};
+  expand.value = !expand.value
+  emit('change', expand.value)
+}
 
 const maxLines = computed(() => {
-  return expand.value ? "inherit" : props.lines;
-});
+  return expand.value ? 'inherit' : props.lines
+})
 
 // 样式变化
 const acitonStyle = computed(() => {
   return {
-    display: expand.value ? "inline" : "block",
-    position: expand.value ? "static" : "absolute",
-    padding: expand.value ? "0" : "",
-  };
-});
+    display: expand.value ? 'inline' : 'block',
+    position: expand.value ? 'static' : 'absolute',
+    padding: expand.value ? '0' : '',
+  }
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
-.iui-ellipsis {
+.dui-ellipsis {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -98,12 +92,7 @@ const acitonStyle = computed(() => {
     position: absolute;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0),
-      $color-bg 20px,
-      $color-bg
-    );
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0), $color-bg 20px, $color-bg);
     color: $primary-6;
     padding-left: $size-6;
   }

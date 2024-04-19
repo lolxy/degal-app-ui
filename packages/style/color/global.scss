@@ -11,25 +11,25 @@ $dark-warning-color: desaturate($warning-color, 30%) !default;
 $dark-error-color: desaturate($error-color, 30%) !default;
 
 // 背景色
-$color-bg: var(--iui-bg) !default;
-$color-bg-secondary: var(--iui-bg-secondary) !default;
-$color-bg-active: var(--iui-bg-active) !default;
-$color-bg-light: var(--iui-bg-light) !default;
-$color-bg-opacity: var(--iui-bg-opacity) !default;
-$color-bg-white: var(--iui-white) !default;
+$color-bg: var(--dui-bg) !default;
+$color-bg-secondary: var(--dui-bg-secondary) !default;
+$color-bg-active: var(--dui-bg-active) !default;
+$color-bg-light: var(--dui-bg-light) !default;
+$color-bg-opacity: var(--dui-bg-opacity) !default;
+$color-bg-white: var(--dui-white) !default;
 
 
 // 文字色
-$color-text: var(--iui-gray-8) !default;
-$color-text-dark: var(--iui-gray-9) !default;
-$color-text-light: var(--iui-gray-7) !default;
-$color-text-lighten: var(--iui-gray-5) !default;
+$color-text: var(--dui-gray-8) !default;
+$color-text-dark: var(--dui-gray-9) !default;
+$color-text-light: var(--dui-gray-7) !default;
+$color-text-lighten: var(--dui-gray-5) !default;
 
 // 边框颜色
-$color-border: var(--iui-gray-3) !default;
-$color-border-dark: var(--iui-gray-4) !default;
-$color-border-light: var(--iui-gray-2) !default;
-$color-border-lighten: var(--iui-gray-1) !default;
+$color-border: var(--dui-gray-3) !default;
+$color-border-dark: var(--dui-gray-4) !default;
+$color-border-light: var(--dui-gray-2) !default;
+$color-border-lighten: var(--dui-gray-1) !default;
 
 // 字体大小
 $font-size-body: 14px !default;

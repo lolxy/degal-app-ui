@@ -8,21 +8,19 @@
     ]"
     :style="{
       transform: `rotate(${rotate}deg)`,
-    }"
-  >
+    }">
     <text
       :class="cls"
       :style="{
         color: color,
         fontSize: size ? `${size}px` : 'inherit',
         lineHeight: size ? `${size}px` : 'inherit',
-      }"
-    ></text>
+      }"></text>
   </view>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed } from 'vue'
 
 const props = defineProps({
   /**
@@ -31,14 +29,14 @@ const props = defineProps({
    */
   name: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 图标颜色
    */
   color: {
     type: String,
-    default: "inherit",
+    default: 'inherit',
   },
   /**
    * 图标大小
@@ -62,28 +60,28 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-});
+})
 
-const prefixCls = "iui-icon";
+const prefixCls = 'dui-icon'
 
 const cls = computed(() => [
   prefixCls,
   {
     [`${prefixCls}-${props.name}`]: props.name,
   },
-]);
+])
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/theme/icon.scss";
+@import '../../style/theme/icon.scss';
 
-.iui-icon-wrapper {
+.dui-icon-wrapper {
   display: inline-flex;
   width: auto;
 }
 
 // 自动旋转
-.iui-icon-spin {
+.dui-icon-spin {
   animation: spin 1s infinite linear;
 }
 

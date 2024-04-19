@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { computed, provide, ref } from "vue";
+import { computed, provide, ref } from 'vue'
 
 const props = defineProps({
   /**
@@ -20,31 +20,31 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
 // 选中值
-const checkedValue = ref([props.modelValue]);
+const checkedValue = ref([props.modelValue])
 
-const prefixCls = "iui-radio-group";
+const prefixCls = 'dui-radio-group'
 
-const cls = computed(() => [prefixCls]);
+const cls = computed(() => [prefixCls])
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(['update:modelValue', 'change'])
 
 // 选中值变化
 const handleRadioChange = (value) => {
   if (!checkedValue.value.includes(value)) {
-    checkedValue.value = [value];
+    checkedValue.value = [value]
   }
-  emit("update:modelValue", value);
-  emit("change", value);
-};
+  emit('update:modelValue', value)
+  emit('change', value)
+}
 
-provide("radio-group", {
+provide('radio-group', {
   justify: props.justify,
   checkedValue,
   handleRadioChange,
-});
+})
 </script>
 
 <style lang="scss" scoped></style>

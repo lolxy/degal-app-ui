@@ -1,15 +1,15 @@
 <template>
-  <iui-translation ref="anim">
+  <dui-translation ref="anim">
     <view :class="prefixCls" @click.stop="handleClick">
       <slot></slot>
     </view>
-  </iui-translation>
+  </dui-translation>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from 'vue'
 
-const prefixCls = "iui-mask";
+const prefixCls = 'dui-mask'
 
 const props = defineProps({
   modelValue: {
@@ -28,51 +28,51 @@ const props = defineProps({
    */
   backgroundColor: {
     type: String,
-    default: "rgba(0, 0, 0, 0.6)",
+    default: 'rgba(0, 0, 0, 0.6)',
   },
-});
+})
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue'])
 
-const anim = ref(null);
+const anim = ref(null)
 
 const show = () => {
-  anim.value?.enter();
-  emit("update:modelValue", true);
-};
+  anim.value?.enter()
+  emit('update:modelValue', true)
+}
 
 const hide = () => {
-  anim.value?.leave();
-  emit("update:modelValue", false);
-};
+  anim.value?.leave()
+  emit('update:modelValue', false)
+}
 
 const handleClick = () => {
   if (props.maskClosable) {
-    hide();
+    hide()
   }
-};
+}
 
 onMounted(() => {
   watch(
     () => props.modelValue,
     (value) => {
       if (value) {
-        show();
+        show()
       } else {
-        hide();
+        hide()
       }
     }
-  );
-});
+  )
+})
 
 defineExpose({
   show,
   hide,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-.iui-mask {
+.dui-mask {
   position: fixed;
   width: 100%;
   height: 100%;

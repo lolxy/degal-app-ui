@@ -5,8 +5,8 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { isArray, isNumber } from "../../helper/is";
+import { computed } from 'vue'
+import { isArray, isNumber } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -15,7 +15,7 @@ const props = defineProps({
    */
   direction: {
     type: String,
-    default: "horizontal",
+    default: 'horizontal',
   },
   /**
    * 间距大小
@@ -23,7 +23,7 @@ const props = defineProps({
    */
   size: {
     type: [String, Number, Array],
-    default: "small",
+    default: 'small',
   },
   /**
    * 对齐方式
@@ -50,19 +50,13 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
-const prefixCls = "iui-space";
+const prefixCls = 'dui-space'
 
 const cls = computed(() => [
   prefixCls,
-  `${prefixCls}-${
-    props.align
-      ? props.align
-      : props.direction === "horizontal"
-      ? "center"
-      : "start"
-  }`,
+  `${prefixCls}-${props.align ? props.align : props.direction === 'horizontal' ? 'center' : 'start'}`,
   [
     {
       [`${prefixCls}-${props.direction}`]: props.direction,
@@ -70,23 +64,23 @@ const cls = computed(() => [
       [`${prefixCls}-fill`]: props.fill,
     },
   ],
-]);
+])
 
 function getMargin(size) {
   if (isNumber(size)) {
-    return size;
+    return size
   }
   switch (size) {
-    case "mini":
-      return 4;
-    case "small":
-      return 8;
-    case "medium":
-      return 16;
-    case "large":
-      return 24;
+    case 'mini':
+      return 4
+    case 'small':
+      return 8
+    case 'medium':
+      return 16
+    case 'large':
+      return 24
     default:
-      return 8;
+      return 8
   }
 }
 
@@ -98,47 +92,43 @@ const getStyle = computed(() => {
       marginRight: 0,
       marginBottom: 0,
     },
-  };
-
-  if (props.direction === "horizontal") {
-    style.marginRight = props.fill
-      ? "auto"
-      : `${getMargin(isArray(props.size) ? props.size[0] : props.size)}px`;
-
-    style.lastChild.marginRight = 0;
   }
 
-  if (props.direction === "vertical" || props.wrap) {
-    style.marginBottom = props.fill
-      ? "auto"
-      : `${getMargin(isArray(props.size) ? props.size[1] : props.size)}px`;
+  if (props.direction === 'horizontal') {
+    style.marginRight = props.fill ? 'auto' : `${getMargin(isArray(props.size) ? props.size[0] : props.size)}px`
+
+    style.lastChild.marginRight = 0
+  }
+
+  if (props.direction === 'vertical' || props.wrap) {
+    style.marginBottom = props.fill ? 'auto' : `${getMargin(isArray(props.size) ? props.size[1] : props.size)}px`
 
     if (!props.wrap) {
-      style.lastChild.marginBottom = 0;
+      style.lastChild.marginBottom = 0
     } else {
-      style.lastChild.marginBottom = style.marginBottom;
+      style.lastChild.marginBottom = style.marginBottom
     }
   }
 
-  return style;
-});
+  return style
+})
 </script>
 
 <style lang="scss" scoped>
 @mixin horizontal-align($type) {
-  &.iui-space-#{$type} {
+  &.dui-space-#{$type} {
     align-items: flex-#{$type};
   }
 }
 
 @mixin vertical-align($type) {
-  &.iui-space-#{$type} {
+  &.dui-space-#{$type} {
     justify-content: #{$type};
     align-items: flex-#{$type};
   }
 }
 
-.iui-space {
+.dui-space {
   display: inline-flex;
   align-items: center;
   width: 100%;
@@ -172,15 +162,15 @@ const getStyle = computed(() => {
 
   /* #ifndef MP */
   :slotted(*) {
-    margin-right: v-bind("getStyle.marginRight");
-    margin-bottom: v-bind("getStyle.marginBottom");
+    margin-right: v-bind('getStyle.marginRight');
+    margin-bottom: v-bind('getStyle.marginBottom');
   }
 
   // 水平模式下 最后一个元素mr为0
   // 垂直模式下 最后一个元素mb为0
   :slotted(:last-child) {
-    margin-right: v-bind("getStyle.lastChild.marginRight");
-    margin-bottom: v-bind("getStyle.lastChild.marginBottom");
+    margin-right: v-bind('getStyle.lastChild.marginRight');
+    margin-bottom: v-bind('getStyle.lastChild.marginBottom');
   }
   // 只有一个元素m为0
   :slotted(:only-child) {
@@ -192,12 +182,12 @@ const getStyle = computed(() => {
 
 /* #ifdef MP */
 :deep(> view) {
-  margin-right: v-bind("getStyle.marginRight");
-  margin-bottom: v-bind("getStyle.marginBottom");
+  margin-right: v-bind('getStyle.marginRight');
+  margin-bottom: v-bind('getStyle.marginBottom');
 }
 :deep(:last-child) {
-  margin-right: v-bind("getStyle.lastChild.marginRight");
-  margin-bottom: v-bind("getStyle.lastChild.marginBottom");
+  margin-right: v-bind('getStyle.lastChild.marginRight');
+  margin-bottom: v-bind('getStyle.lastChild.marginBottom');
 }
 
 :deep(:only-child) {

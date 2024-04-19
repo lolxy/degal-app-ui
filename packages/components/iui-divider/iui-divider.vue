@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed } from 'vue'
 
 const props = defineProps({
   /**
@@ -16,7 +16,7 @@ const props = defineProps({
    */
   direction: {
     type: String,
-    default: "horizontal",
+    default: 'horizontal',
   },
   /**
    * 分割线文字位置
@@ -24,7 +24,7 @@ const props = defineProps({
    */
   align: {
     type: String,
-    default: "center",
+    default: 'center',
   },
   /**
    * 分割线样式类型
@@ -32,7 +32,7 @@ const props = defineProps({
    */
   type: {
     type: String,
-    default: "solid",
+    default: 'solid',
   },
   /**
    * 分割线宽度/高度
@@ -57,35 +57,31 @@ const props = defineProps({
    */
   textBg: {
     type: String,
-    default: "var(--iui-bg)",
+    default: 'var(--dui-bg)',
   },
-});
+})
 
-const prefixCls = "iui-divider";
+const prefixCls = 'dui-divider'
 
 const cls = computed(() => [
   prefixCls,
-  [
-    `${prefixCls}-${props.direction}`,
-    `${prefixCls}-align-${props.align}`,
-    `${prefixCls}-${props.type}`,
-  ],
-]);
+  [`${prefixCls}-${props.direction}`, `${prefixCls}-align-${props.align}`, `${prefixCls}-${props.type}`],
+])
 
 const margin = computed(() => {
-  if (props.direction === "horizontal") {
-    return `${props.margin}px 0`;
+  if (props.direction === 'horizontal') {
+    return `${props.margin}px 0`
   } else {
-    return `0 ${props.margin}px`;
+    return `0 ${props.margin}px`
   }
-});
+})
 
-const size = computed(() => `${props.size}px`);
+const size = computed(() => `${props.size}px`)
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-divider {
+@import '../../style/index.scss';
+.dui-divider {
   &-horizontal {
     position: relative;
     clear: both;
@@ -120,20 +116,20 @@ const size = computed(() => `${props.size}px`);
 
   &-align {
     &-start {
-      .iui-divider-text {
+      .dui-divider-text {
         left: 24px;
       }
     }
 
     &-center {
-      .iui-divider-text {
+      .dui-divider-text {
         left: 50%;
         transform: translate(-50%, -50%);
       }
     }
 
     &-end {
-      .iui-divider-text {
+      .dui-divider-text {
         right: 24px;
       }
     }

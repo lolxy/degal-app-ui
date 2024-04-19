@@ -1,25 +1,20 @@
 <template>
   <view :class="prefixCls">
-    <iui-popup
+    <dui-popup
       v-model="innerVisible"
       @close="close"
       :contentStyle="{ padding: 0 }"
       :containerStyle="{
         borderTopLeftRadius: `${picker.radius}px`,
         borderTopRightRadius: `${picker.radius}px`,
-      }"
-    >
+      }">
       <template #title>
         <view :class="`${prefixCls}-header`">
-          <view :class="`${prefixCls}-header-button`" @click="close">
-            取消
-          </view>
+          <view :class="`${prefixCls}-header-button`" @click="close"> 取消 </view>
 
           <view :class="`${prefixCls}-header-title`">{{ picker.title }}</view>
 
-          <view :class="`${prefixCls}-header-button`" @click="confirm">
-            确认
-          </view>
+          <view :class="`${prefixCls}-header-button`" @click="confirm"> 确认 </view>
         </view>
       </template>
       <view :class="`${prefixCls}-container`">
@@ -27,14 +22,10 @@
           :value="innerValue"
           :class="`${prefixCls}-content`"
           indicator-style="height: 48px"
-          @change="handleChange"
-        >
+          @change="handleChange">
           <block v-for="(_, col) in colunms" :key="`col-${col}`">
             <picker-view-column>
-              <block
-                v-for="(op, idx) in picker.options[col]"
-                :key="`${col}-${idx}`"
-              >
+              <block v-for="(op, idx) in picker.options[col]" :key="`${col}-${idx}`">
                 <view :class="`${prefixCls}-item`">
                   {{ op }}
                 </view>
@@ -43,13 +34,13 @@
           </block>
         </picker-view>
       </view>
-    </iui-popup>
+    </dui-popup>
   </view>
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
-import { isEmpty, isString } from "../../helper/is";
+import { computed, ref, watch } from 'vue'
+import { isEmpty, isString } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -78,7 +69,7 @@ const props = defineProps({
    */
   title: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 圆角
@@ -87,45 +78,39 @@ const props = defineProps({
     type: Number,
     default: 6,
   },
-});
+})
 
-const prefixCls = "iui-picker";
+const prefixCls = 'dui-picker'
 
-const innerVisible = ref(props.visible);
-const innerValue = ref(props.modelValue);
+const innerVisible = ref(props.visible)
+const innerValue = ref(props.modelValue)
 
 // 上一个值
-const prevValue = ref(innerValue.value);
+const prevValue = ref(innerValue.value)
 
 const picker = ref({
   options: props.options,
   title: props.title,
   radius: props.radius,
-});
+})
 
 // 模式 单列，多列
 const colunms = computed(() => {
-  return picker.value.options.length;
-});
+  return picker.value.options.length
+})
 
-const emit = defineEmits([
-  "update:modelValue",
-  "update:visible",
-  "close",
-  "confirm",
-  "change",
-]);
+const emit = defineEmits(['update:modelValue', 'update:visible', 'close', 'confirm', 'change'])
 
 const close = () => {
-  innerVisible.value = false;
-  emit("update:visible", false);
-  emit("close");
-};
+  innerVisible.value = false
+  emit('update:visible', false)
+  emit('close')
+}
 
 const confirm = () => {
-  emit("confirm", innerValue.value);
-  close();
-};
+  emit('confirm', innerValue.value)
+  close()
+}
 
 /**
  * picker 发生变化
@@ -133,85 +118,83 @@ const confirm = () => {
  * @returns 选中的值，选中的索引，变化的列
  */
 const handleChange = (e) => {
-  const result = [];
+  const result = []
 
   picker.value.options.forEach((item, index) => {
-    result.push(item[e.detail.value[index]]);
-  });
+    result.push(item[e.detail.value[index]])
+  })
 
   // 保存上一个值
-  prevValue.value = innerValue.value;
-  innerValue.value = e.detail.value;
+  prevValue.value = innerValue.value
+  innerValue.value = e.detail.value
 
-  const colIdx = getColChange(prevValue.value, innerValue.value);
+  const colIdx = getColChange(prevValue.value, innerValue.value)
 
-  emit("update:modelValue", result);
-  emit("change", {
+  emit('update:modelValue', result)
+  emit('change', {
     value: result,
     index: e.detail.value,
     changedCol: colIdx,
-  });
-};
+  })
+}
 
 // 计算列变化
 const getColChange = (prev, next) => {
   // 如果长度不同，说明是新的列变化
   if (prev.length !== next.length) {
-    return next.length - 1;
+    return next.length - 1
   }
 
-  const col = prev.findIndex((item, index) => item !== next[index]);
-  return col === -1 ? 0 : col;
-};
+  const col = prev.findIndex((item, index) => item !== next[index])
+  return col === -1 ? 0 : col
+}
 
 const open = (options) => {
   picker.value = {
     ...props,
     ...options,
-  };
-
-  if (isString(picker.value.options[0])) {
-    picker.value.options = [picker.value.options];
   }
 
-  innerVisible.value = true;
-  emit("update:visible", true);
+  if (isString(picker.value.options[0])) {
+    picker.value.options = [picker.value.options]
+  }
+
+  innerVisible.value = true
+  emit('update:visible', true)
   // 首次打开需要触发一次 change 事件，如果级联选择需要更新 options
   handleChange({
     detail: {
-      value: isEmpty(innerValue.value)
-        ? Array.from({ length: colunms.value }, () => 0)
-        : innerValue.value,
+      value: isEmpty(innerValue.value) ? Array.from({ length: colunms.value }, () => 0) : innerValue.value,
     },
-  });
-};
+  })
+}
 
 const setOptions = (col, options) => {
-  picker.value.options[col] = options;
-};
+  picker.value.options[col] = options
+}
 
 watch(
   () => props.visible,
   (value) => {
     if (value) {
-      open();
+      open()
     } else {
-      close;
+      close
     }
   },
   {
     immediate: true,
   }
-);
+)
 
 defineExpose({
   open,
   setOptions,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-.iui-picker {
+.dui-picker {
   &-header {
     height: $size-8;
     display: flex;

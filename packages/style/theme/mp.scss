@@ -1,24 +1,24 @@
 // 小程序特有样式
 
-iui-space {
+dui-space {
     width: 100%;
 }
 
-iui-button,
-iui-grid-item,
-iui-cell,
-iui-checkbox,
-iui-radio,
-iui-swiper,
-iui-image,
-iui-icon {
+dui-button,
+dui-grid-item,
+dui-cell,
+dui-checkbox,
+dui-radio,
+dui-swiper,
+dui-image,
+dui-icon {
     display: contents;
 }
 
 
 
-iui-picker {
-    :deep(.iui-popup-container-content) {
+dui-picker {
+    :deep(.dui-popup-container-content) {
         background-color: $mp-picker-title-bg !important;
     }
 }

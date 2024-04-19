@@ -8,15 +8,13 @@
     ]"
     :scroll-left="scrollLeft"
     scroll-x
-    scroll-with-animation
-  >
+    scroll-with-animation>
     <view :class="cls">
       <view
         :class="`${prefixCls}-content`"
         :style="{
           justifyContent: tabWidth ? 'flex-start' : 'space-between',
-        }"
-      >
+        }">
         <block v-for="(tab, idx) in list" :key="idx">
           <!-- tab text -->
           <view
@@ -31,12 +29,11 @@
               width: tabWidth ? `${tabWidth}px` : '100%',
               justifyContent: tabWidth ? 'flex-start' : 'center',
             }"
-            @click="handleTabClick(idx, tab)"
-          >
+            @click="handleTabClick(idx, tab)">
             <view class="cell">
-              <iui-icon v-if="tab.icon" :name="tab.icon"></iui-icon>
+              <dui-icon v-if="tab.icon" :name="tab.icon"></dui-icon>
               {{ tab.title }}
-              <iui-badge v-if="tab.badge" v-bind="tab.badge"></iui-badge>
+              <dui-badge v-if="tab.badge" v-bind="tab.badge"></dui-badge>
             </view>
           </view>
         </block>
@@ -50,8 +47,7 @@
           {
             transitionDuration: duration,
           },
-        ]"
-      >
+        ]">
         <view
           class="line"
           :class="[
@@ -61,20 +57,17 @@
           ]"
           :style="{
             transitionDuration: duration,
-            height: lineHeight
-              ? `${lineHeight > 10 ? 10 : lineHeight}px`
-              : '2px',
+            height: lineHeight ? `${lineHeight > 10 ? 10 : lineHeight}px` : '2px',
             borderRadius: lineHeight ? `${lineHeight / 2}px` : '',
-          }"
-        ></view>
+          }"></view>
       </view>
     </view>
   </scroll-view>
 </template>
 
 <script setup>
-import { computed, getCurrentInstance, ref, onMounted } from "vue";
-import { getRect } from "../../helper/rect";
+import { computed, getCurrentInstance, ref, onMounted } from 'vue'
+import { getRect } from '../../helper/rect'
 
 const props = defineProps({
   /**
@@ -101,7 +94,7 @@ const props = defineProps({
    */
   type: {
     type: String,
-    default: "line",
+    default: 'line',
   },
   /**
    * 线条样式
@@ -137,7 +130,7 @@ const props = defineProps({
    */
   activeColor: {
     type: String,
-    default: "var(--iui-primary-6)",
+    default: 'var(--dui-primary-6)',
   },
   /**
    * tab宽度
@@ -146,126 +139,126 @@ const props = defineProps({
   tabWidth: {
     type: Number,
   },
-});
+})
 
-const prefixCls = "iui-tabs";
+const prefixCls = 'dui-tabs'
 
-const cls = computed(() => [prefixCls, `${prefixCls}-type-${props.type}`]);
+const cls = computed(() => [prefixCls, `${prefixCls}-type-${props.type}`])
 
 // 正在切换
-const changing = ref(false);
-const duration = props.duration + "ms";
+const changing = ref(false)
+const duration = props.duration + 'ms'
 
-const instance = getCurrentInstance();
+const instance = getCurrentInstance()
 
 // 组件内部current
-const current = ref(props.modelValue);
+const current = ref(props.modelValue)
 
 // 容器宽度
-const containerWidth = ref(0);
+const containerWidth = ref(0)
 
 // 滚动位置
-const scrollLeft = ref(0);
+const scrollLeft = ref(0)
 
 // 滑块位置
-const currentTabOffset = ref(0);
-const currentTabWidth = ref(props.lineWidth);
+const currentTabOffset = ref(0)
+const currentTabWidth = ref(props.lineWidth)
 
 const sliderStyle = computed(() => {
   return {
     width: `${currentTabWidth.value}px`,
     transform: `translateX(${currentTabOffset.value}px)`,
-  };
-});
+  }
+})
 
-const isType = (type) => props.type === type;
+const isType = (type) => props.type === type
 
 // 设置滑块位置
 const setSliderPosition = (idx) => {
   // 点模式 设置毛毛虫动画
-  if (isType("dot")) {
-    changing.value = true;
+  if (isType('dot')) {
+    changing.value = true
     setTimeout(() => {
-      changing.value = false;
-    }, props.duration);
+      changing.value = false
+    }, props.duration)
   }
 
-  const tab = tabsOffsetList.value[idx];
+  const tab = tabsOffsetList.value[idx]
 
   // 计算滑动位置
-  scrollLeft.value = tab.offset - containerWidth.value / 2;
+  scrollLeft.value = tab.offset - containerWidth.value / 2
 
-  if (props.lineWidth === "auto" && isType("line")) {
+  if (props.lineWidth === 'auto' && isType('line')) {
     getRect(instance, `#tab-${idx} > .cell`).then((res) => {
-      currentTabWidth.value = res.width;
-      currentTabOffset.value = tab.offset - currentTabWidth.value / 2;
-    });
-  } else if (isType("tag")) {
+      currentTabWidth.value = res.width
+      currentTabOffset.value = tab.offset - currentTabWidth.value / 2
+    })
+  } else if (isType('tag')) {
     getRect(instance, `#tab-${idx} > .cell`).then((res) => {
-      currentTabWidth.value = res.width + 32;
-      currentTabOffset.value = tab.offset - currentTabWidth.value / 2;
-    });
-  } else if (isType("card")) {
-    currentTabOffset.value = tab.offset - tab.width / 2;
-    currentTabWidth.value = tab.width;
+      currentTabWidth.value = res.width + 32
+      currentTabOffset.value = tab.offset - currentTabWidth.value / 2
+    })
+  } else if (isType('card')) {
+    currentTabOffset.value = tab.offset - tab.width / 2
+    currentTabWidth.value = tab.width
   } else {
     if (props.tabWidth) {
-      currentTabOffset.value = tab.offset - props.tabWidth / 2;
+      currentTabOffset.value = tab.offset - props.tabWidth / 2
     } else {
-      currentTabOffset.value = tab.offset - currentTabWidth.value / 2;
+      currentTabOffset.value = tab.offset - currentTabWidth.value / 2
     }
   }
-};
+}
 
-const tabsOffsetList = ref([]);
+const tabsOffsetList = ref([])
 
 // 获取tab信息
 const getTabsWidth = () => {
-  const temp = [];
+  const temp = []
 
   // 获取容器宽度
-  getRect(instance, ".iui-tabs-wrapper").then((res) => {
-    containerWidth.value = res.width;
+  getRect(instance, '.dui-tabs-wrapper').then((res) => {
+    containerWidth.value = res.width
 
     // 获取tab偏移量
-    getRect(instance, ".iui-tabs-cell", true).then((res) => {
-      let offset = 0;
+    getRect(instance, '.dui-tabs-cell', true).then((res) => {
+      let offset = 0
 
       res.forEach((tab) => {
         temp.push({
           width: parseInt(tab.width),
           offset: parseInt(offset + tab.width / 2),
-        });
+        })
 
-        offset += tab.width;
-      });
+        offset += tab.width
+      })
 
-      tabsOffsetList.value = temp;
+      tabsOffsetList.value = temp
 
-      setSliderPosition(props.modelValue);
-    });
-  });
-};
+      setSliderPosition(props.modelValue)
+    })
+  })
+}
 
 onMounted(() => {
-  getTabsWidth();
-});
+  getTabsWidth()
+})
 
 // 事件
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(['update:modelValue', 'change'])
 
 // 点击tab
 const handleTabClick = (idx, tab) => {
-  if (idx === current.value) return;
-  emit("update:modelValue", idx);
-  emit("change", idx, tab);
-  current.value = idx;
-  setSliderPosition(idx);
-};
+  if (idx === current.value) return
+  emit('update:modelValue', idx)
+  emit('change', idx, tab)
+  current.value = idx
+  setSliderPosition(idx)
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
 :deep(.uni-scroll-view) {
   scrollbar-width: none !important;
@@ -275,11 +268,11 @@ const handleTabClick = (idx, tab) => {
   }
 }
 
-.iui-tabs-wrapper {
+.dui-tabs-wrapper {
   box-sizing: content-box;
   // margin-bottom: 10px; // 滑块
 
-  &.iui-tabs-split {
+  &.dui-tabs-split {
     border-bottom: 1rpx solid $color-border;
   }
 
@@ -290,7 +283,7 @@ const handleTabClick = (idx, tab) => {
   }
 }
 
-.iui-tabs {
+.dui-tabs {
   display: flex;
   align-items: center;
   position: relative;
@@ -327,7 +320,7 @@ const handleTabClick = (idx, tab) => {
 
   &-type {
     &-dot {
-      .iui-tabs-slider {
+      .dui-tabs-slider {
         display: flex;
         justify-content: center;
         height: 6px !important;
@@ -341,10 +334,10 @@ const handleTabClick = (idx, tab) => {
     }
 
     &-tag {
-      .iui-tabs-cell-active {
+      .dui-tabs-cell-active {
         color: $color-white !important;
       }
-      .iui-tabs-slider {
+      .dui-tabs-slider {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -364,7 +357,7 @@ const handleTabClick = (idx, tab) => {
       background-color: $color-bg-secondary;
       border-radius: $border-radius-small;
 
-      .iui-tabs-slider {
+      .dui-tabs-slider {
         display: flex;
         justify-content: center;
         height: 100%;
@@ -383,7 +376,7 @@ const handleTabClick = (idx, tab) => {
   }
 }
 
-.iui-tabs-slider {
+.dui-tabs-slider {
   position: absolute;
   bottom: 0;
   transition-property: all;
@@ -400,8 +393,7 @@ const handleTabClick = (idx, tab) => {
 }
 
 .tabs-dot-move {
-  animation: tabs-dot-move v-bind(duration)
-    cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  animation: tabs-dot-move v-bind(duration) cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 
 @keyframes tabs-dot-move {

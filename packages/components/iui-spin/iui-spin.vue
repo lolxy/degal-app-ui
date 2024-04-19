@@ -6,8 +6,7 @@
       :style="{
         height: fullScreen ? '100vh' : '100%',
       }"
-      @touchmove.prevent
-    >
+      @touchmove.prevent>
       <view class="cricle"></view>
       <text v-if="tip" class="text">{{ tip }}</text>
     </view>
@@ -17,7 +16,7 @@
 </template>
 
 <script setup>
-import { computed, useSlots } from "vue";
+import { computed, useSlots } from 'vue'
 
 const props = defineProps({
   // 通用属性
@@ -33,7 +32,7 @@ const props = defineProps({
    */
   color: {
     type: String,
-    default: "#3C7EFF",
+    default: '#3C7EFF',
   },
   /**
    * 描述文案
@@ -55,7 +54,7 @@ const props = defineProps({
    */
   maskColor: {
     type: String,
-    default: "var(--iui-bg-opacity)",
+    default: 'var(--dui-bg-opacity)',
   },
   /**
    * 全屏
@@ -65,9 +64,9 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
-const prefixCls = "iui-spin";
+const prefixCls = 'dui-spin'
 
 const cls = computed(() => [
   prefixCls,
@@ -75,22 +74,22 @@ const cls = computed(() => [
     [`${prefixCls}-loading`]: props.loading,
     [`${prefixCls}-tip`]: props.tip,
   },
-]);
+])
 
-const iconSize = computed(() => `${props.size}px`);
+const iconSize = computed(() => `${props.size}px`)
 
-const slots = useSlots();
+const slots = useSlots()
 const showLoading = computed(() => {
   if (slots.default && !props.loading) {
-    return "none";
+    return 'none'
   }
-  return "flex";
-});
+  return 'flex'
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-spin {
+@import '../../style/index.scss';
+.dui-spin {
   &-tip {
     .container {
       display: inline-flex;

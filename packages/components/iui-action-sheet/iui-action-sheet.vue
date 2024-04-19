@@ -1,6 +1,6 @@
 <template>
   <view :class="prefixCls">
-    <iui-popup
+    <dui-popup
       v-model="innerVisible"
       :containerStyle="{
         borderTopLeftRadius: `${sheet.radius}px`,
@@ -10,14 +10,10 @@
       :contentStyle="{
         padding: 0,
       }"
-      @close="close"
-    >
+      @close="close">
       <view :class="`${prefixCls}-list`">
         <block v-for="(action, idx) in sheet.actions" :key="idx">
-          <view
-            :class="`${prefixCls}-list-item`"
-            @click="handleActionClick(action, idx)"
-          >
+          <view :class="`${prefixCls}-list-item`" @click="handleActionClick(action, idx)">
             <view v-if="!isObject(action)">
               {{ action }}
             </view>
@@ -30,8 +26,7 @@
               v-else
               :style="{
                 color: action.color,
-              }"
-            >
+              }">
               <view>{{ action.name }}</view>
             </view>
           </view>
@@ -43,13 +38,13 @@
           {{ sheet.cancelText }}
         </view>
       </view>
-    </iui-popup>
+    </dui-popup>
   </view>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
-import { isObject } from "../../helper/is";
+import { onMounted, ref, watch } from 'vue'
+import { isObject } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -95,14 +90,14 @@ const props = defineProps({
    */
   cancelText: {
     type: String,
-    default: "取消",
+    default: '取消',
   },
-});
+})
 
-const prefixCls = "iui-action-sheet";
-const emit = defineEmits(["update:modelValue", "open", "close", "click"]);
+const prefixCls = 'dui-action-sheet'
+const emit = defineEmits(['update:modelValue', 'open', 'close', 'click'])
 
-const innerVisible = ref(props.modelValue);
+const innerVisible = ref(props.modelValue)
 
 const sheet = ref({
   title: props.title,
@@ -110,49 +105,49 @@ const sheet = ref({
   actions: props.actions,
   cancel: props.cancel,
   cancelText: props.cancelText,
-});
+})
 
 const open = (params) => {
-  sheet.value = Object.assign(sheet.value, params);
+  sheet.value = Object.assign(sheet.value, params)
 
-  innerVisible.value = true;
-  emit("update:modelValue", true);
-  emit("open");
-};
+  innerVisible.value = true
+  emit('update:modelValue', true)
+  emit('open')
+}
 
 const close = () => {
-  innerVisible.value = false;
-  emit("update:modelValue", false);
-  emit("close");
-};
+  innerVisible.value = false
+  emit('update:modelValue', false)
+  emit('close')
+}
 
 const handleActionClick = (action, idx) => {
-  emit("click", action, idx);
+  emit('click', action, idx)
 
-  close();
-};
+  close()
+}
 
 onMounted(() => {
   watch(
     () => props.modelValue,
     (value) => {
-      innerVisible.value = value;
+      innerVisible.value = value
     },
     {
       immediate: true,
     }
-  );
-});
+  )
+})
 
 defineExpose({
   open,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
-.iui-action-sheet {
+.dui-action-sheet {
   &-list {
     display: flex;
     flex-direction: column;

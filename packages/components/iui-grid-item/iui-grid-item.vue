@@ -6,19 +6,18 @@
       marginLeft: `${grid.colGap / 2}px`,
       marginRight: `${grid.colGap / 2}px`,
       flexShrink: `${grid.colGap ? 1 : 0}`,
-    }"
-  >
+    }">
     <slot />
   </view>
 </template>
 
 <script setup>
-import { computed, inject } from "vue";
-import { isBoolean } from "../../helper/is";
+import { computed, inject } from 'vue'
+import { isBoolean } from '../../helper/is'
 
-const grid = inject("iui-grid-props");
+const grid = inject('dui-grid-props')
 
-const prefixCls = "iui-grid-item";
+const prefixCls = 'dui-grid-item'
 
 const cls = computed(() => [
   prefixCls,
@@ -26,12 +25,12 @@ const cls = computed(() => [
     [`${prefixCls}-border`]: grid.border,
     [`${prefixCls}-hover`]: isBoolean(grid.clickEffect) && grid.clickEffect,
   },
-]);
+])
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-grid-item {
+@import '../../style/index.scss';
+.dui-grid-item {
   display: flex;
   justify-content: center;
   align-items: center;

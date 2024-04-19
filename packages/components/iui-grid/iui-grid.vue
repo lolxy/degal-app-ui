@@ -2,25 +2,21 @@
   <view :class="cls">
     <slot v-if="isEmpty(data)" />
     <view :class="cls" v-else>
-      <iui-grid-row v-for="rowIdx in rows" :key="`row-${rowIdx}`">
-        <iui-grid-item
+      <dui-grid-row v-for="rowIdx in rows" :key="`row-${rowIdx}`">
+        <dui-grid-item
           v-for="(item, index) in rowData(rowIdx)"
           :key="`row-${rowIdx}-${index}`"
-          @click="$emit('click', item, rowIdx, index)"
-        >
+          @click="$emit('click', item, rowIdx, index)">
           <view
             :class="`${prefixCls}-row-item ${
-              isBoolean(clickEffect) && clickEffect
-                ? `${prefixCls}-hover`
-                : clickEffect
+              isBoolean(clickEffect) && clickEffect ? `${prefixCls}-hover` : clickEffect
             }`"
             :style="{
               flexDirection: getDirection,
               justifyContent: getAlign,
               alignItems: getAlign,
               backgroundColor: bgColor,
-            }"
-          >
+            }">
             <view class="icon" :style="iconStyle"> </view>
 
             <view class="content" :style="contentStyle">
@@ -33,17 +29,17 @@
               </text>
             </view>
           </view>
-        </iui-grid-item>
-      </iui-grid-row>
+        </dui-grid-item>
+      </dui-grid-row>
     </view>
   </view>
 </template>
 
 <script setup>
-import { computed, provide } from "vue";
-import { isEmpty, isNumber, isBoolean } from "../../helper/is";
-import iuiGridRow from "../iui-grid-row/iui-grid-row.vue";
-import iuiGridItem from "../iui-grid-item/iui-grid-item.vue";
+import { computed, provide } from 'vue'
+import { isEmpty, isNumber, isBoolean } from '../../helper/is'
+import iuiGridRow from '../dui-grid-row/dui-grid-row.vue'
+import iuiGridItem from '../dui-grid-item/dui-grid-item.vue'
 
 const props = defineProps({
   /**
@@ -60,7 +56,7 @@ const props = defineProps({
    */
   direction: {
     type: String,
-    default: "vertical",
+    default: 'vertical',
   },
   /**
    * 图标大小
@@ -72,7 +68,7 @@ const props = defineProps({
   },
   /**
    * 宫格背景颜色
-   * 作用于 iui-grid-item
+   * 作用于 dui-grid-item
    */
   bgColor: {
     type: String,
@@ -112,7 +108,7 @@ const props = defineProps({
    */
   align: {
     type: String,
-    default: "center",
+    default: 'center',
   },
   /**
    * 滑动
@@ -129,79 +125,79 @@ const props = defineProps({
     type: [Boolean, Object],
     default: true,
   },
-});
+})
 
-const prefixCls = "iui-grid";
+const prefixCls = 'dui-grid'
 
 const cls = computed(() => [prefixCls, `cols-${props.cols}`], {
   [`${prefixCls}-border`]: props.border,
-});
+})
 
-const emit = defineEmits(["click"]);
+const emit = defineEmits(['click'])
 
-provide("iui-grid-props", props);
+provide('dui-grid-props', props)
 
 // 获取行数 如果开启滑动，只显示一行
-const rows = props.scroll ? 1 : Math.ceil(props.data.length / props.cols);
+const rows = props.scroll ? 1 : Math.ceil(props.data.length / props.cols)
 // 获取行数据
 const rowData = (rowIdx) => {
-  if (props.scroll) return props.data;
+  if (props.scroll) return props.data
 
-  return props.data.slice((rowIdx - 1) * props.cols, rowIdx * props.cols);
-};
+  return props.data.slice((rowIdx - 1) * props.cols, rowIdx * props.cols)
+}
 
 // 图标大小
 const getIconSize = computed(() => {
   if (isNumber(props.iconSize)) {
-    return `${props.iconSize}px`;
+    return `${props.iconSize}px`
   }
-  return props.iconSize;
-});
+  return props.iconSize
+})
 
 const getAlign = computed(() => {
-  return props.align === "center" ? "center" : "flex-" + props.align;
-});
+  return props.align === 'center' ? 'center' : 'flex-' + props.align
+})
 
 // 图标样式
 const iconStyle = computed(() => {
   return {
     width: getIconSize.value,
     height: getIconSize.value,
-    marginBottom: props.direction === "vertical" ? "10px" : 0,
-  };
-});
+    marginBottom: props.direction === 'vertical' ? '10px' : 0,
+  }
+})
 
 // 内容方向
 const getDirection = computed(() => {
-  return props.direction === "vertical" ? "column" : "row";
-});
+  return props.direction === 'vertical' ? 'column' : 'row'
+})
 
 // 内容样式
 const contentStyle = computed(() => {
   return {
-    marginLeft: props.direction === "vertical" ? 0 : "10px",
-    textAlign: props.direction === "vertical" ? "center" : "left",
-  };
-});
+    marginLeft: props.direction === 'vertical' ? 0 : '10px',
+    textAlign: props.direction === 'vertical' ? 'center' : 'left',
+  }
+})
 
 // 是否有间距 有间距时，不隐藏边框
-const borderWidth = props.colGap ? "1px" : 0;
+const borderWidth = props.colGap ? '1px' : 0
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
-.iui-grid {
+.dui-grid {
   display: flex;
   flex-direction: column;
   width: 100%;
 
-  :deep(.iui-grid-row:not(:first-child) .iui-grid-item) {
+  :deep(.dui-grid-row:not(:first-child) .dui-grid-item) {
     border-top-width: v-bind(borderWidth);
   }
 
   /* #ifdef MP */
-  :deep(iui-grid-row:not(:first-child) iui-grid-item > view) {
+  :deep(dui-grid-row:not(:first-child) dui-grid-item > view) {
     border-top-width: v-bind(borderWidth);
   }
   /* #endif */
@@ -214,7 +210,7 @@ const borderWidth = props.colGap ? "1px" : 0;
   }
 }
 
-.iui-grid-row-item {
+.dui-grid-row-item {
   display: flex;
   align-items: center;
   width: 100%;
@@ -222,7 +218,7 @@ const borderWidth = props.colGap ? "1px" : 0;
   box-sizing: border-box;
 
   .icon {
-    background-color: var(--iui-primary-2);
+    background-color: var(--dui-primary-2);
     border-radius: $border-radius-small;
     flex-shrink: 0;
   }

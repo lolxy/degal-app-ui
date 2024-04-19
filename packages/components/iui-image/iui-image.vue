@@ -3,13 +3,12 @@
     :class="cls"
     :style="{
       borderRadius: isNumber(props.radius) ? `${props.radius}px` : props.radius,
-    }"
-  >
+    }">
     <view :class="`${prefixCls}-overlap`" v-if="overlap">
-      <iui-spin color="#e5e6eb" v-if="loading"></iui-spin>
+      <dui-spin color="#e5e6eb" v-if="loading"></dui-spin>
 
       <view class="load-error" v-else>
-        <iui-icon name="stop" size="15"></iui-icon>
+        <dui-icon name="stop" size="15"></dui-icon>
         <text>{{ errorText }}</text>
       </view>
     </view>
@@ -21,14 +20,13 @@
       :lazy-load="lazy"
       :mode="mode"
       @load="handleLoaded"
-      @error="handleLoadedError"
-    />
+      @error="handleLoadedError" />
   </view>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { isNumber } from "../../helper/is";
+import { computed, ref } from 'vue'
+import { isNumber } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -36,14 +34,14 @@ const props = defineProps({
    */
   src: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 裁剪模式
    */
   mode: {
     type: String,
-    default: "scaleToFill",
+    default: 'scaleToFill',
   },
   /**
    * 加载中
@@ -57,7 +55,7 @@ const props = defineProps({
    */
   errorText: {
     type: String,
-    default: "加载失败",
+    default: '加载失败',
   },
   /**
    * 懒加载
@@ -73,44 +71,44 @@ const props = defineProps({
     type: [Number, String],
     default: 0,
   },
-});
+})
 
-const loaded = ref(false);
-const loading = ref(true);
+const loaded = ref(false)
+const loading = ref(true)
 
 const overlap = computed(() => {
-  if (props.loading) return true;
-  return !loaded.value || loading.value;
-});
+  if (props.loading) return true
+  return !loaded.value || loading.value
+})
 
-const prefixCls = "iui-image";
+const prefixCls = 'dui-image'
 
-const cls = computed(() => [prefixCls]);
+const cls = computed(() => [prefixCls])
 
-const emit = defineEmits(["load", "error"]);
+const emit = defineEmits(['load', 'error'])
 
 const handleLoaded = () => {
-  emit("load");
-  loaded.value = true;
-  if (props.loading) return;
-  loading.value = false;
-};
+  emit('load')
+  loaded.value = true
+  if (props.loading) return
+  loading.value = false
+}
 
 const handleLoadedError = () => {
-  emit("error");
-  loaded.value = false;
-  loading.value = false;
-};
+  emit('error')
+  loaded.value = false
+  loading.value = false
+}
 
 defineExpose({
   loaded,
   loading,
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
-.iui-image {
+@import '../../style/index.scss';
+.dui-image {
   height: 100%;
   position: relative;
   border-radius: inherit;

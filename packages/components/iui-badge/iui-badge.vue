@@ -4,8 +4,7 @@
       :class="cls"
       :style="{
         background: color,
-      }"
-    >
+      }">
       <view v-if="dot" :class="`${prefixCls}-dot`"> </view>
       <view v-else :class="`${prefixCls}-text`">
         <view
@@ -14,9 +13,8 @@
           :style="{
             fontSize: text ? '14px' : '12px',
             marginRight: text ? '2px' : 0,
-          }"
-        >
-          <iui-icon v-if="icon" :name="icon"></iui-icon>
+          }">
+          <dui-icon v-if="icon" :name="icon"></dui-icon>
         </view>
         <text>{{ getBadgeText() }}</text>
       </view>
@@ -26,8 +24,8 @@
 </template>
 
 <script setup>
-import { computed, useSlots } from "vue";
-import { isArray, isEmpty } from "../../helper/is";
+import { computed, useSlots } from 'vue'
+import { isArray, isEmpty } from '../../helper/is'
 
 const props = defineProps({
   /**
@@ -35,14 +33,14 @@ const props = defineProps({
    */
   text: {
     type: String,
-    default: "",
+    default: '',
   },
   /**
    * 颜色
    */
   color: {
     type: String,
-    default: "#F53F3F",
+    default: '#F53F3F',
   },
   /**
    * 显示为点
@@ -57,7 +55,7 @@ const props = defineProps({
    */
   position: {
     type: [String, Array],
-    default: "tr",
+    default: 'tr',
   },
   /**
    * 最大值
@@ -73,57 +71,56 @@ const props = defineProps({
   icon: {
     type: String,
   },
-});
+})
 
-const prefixCls = "iui-badge";
+const prefixCls = 'dui-badge'
 
-const slots = useSlots();
+const slots = useSlots()
 const cls = computed(() => [
   prefixCls,
   {
-    [`${prefixCls}-${props.position}`]:
-      !isArray(props.position) && slots.default,
+    [`${prefixCls}-${props.position}`]: !isArray(props.position) && slots.default,
     [`${prefixCls}-custom-position`]: isArray(props.position),
   },
-]);
+])
 
 const getBadgeText = () => {
-  const { text, max } = props;
+  const { text, max } = props
   if (isEmpty(text)) {
-    return "";
+    return ''
   }
   if (text > max) {
-    return `${max}+`;
+    return `${max}+`
   }
-  return text;
-};
+  return text
+}
 // 自定义位置
-const positionX = isArray(props.position) ? `${props.position[0]}px` : 0;
-const positionY = isArray(props.position) ? `${props.position[1]}px` : 0;
+const positionX = isArray(props.position) ? `${props.position[0]}px` : 0
+const positionY = isArray(props.position) ? `${props.position[1]}px` : 0
 
 // 徽章padding
 const getPadding = computed(() => {
   if (props.dot) {
-    return 0;
+    return 0
   }
 
   if (props.icon) {
-    return "0 3px";
+    return '0 3px'
   }
 
-  return "0 6px";
-});
+  return '0 6px'
+})
 </script>
 
 <style lang="scss" scoped>
-@import "../../style/index.scss";
+@import '../../style/index.scss';
 
-.iui-badge-wrapper {
+.dui-badge-wrapper {
   position: relative;
   display: inline-flex;
   height: 100%;
 }
-.iui-badge {
+.dui-badge {
   display: inline-block;
   font-size: $font-size-mini;
   color: $color-white;
