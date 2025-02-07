@@ -19,7 +19,12 @@
 
           <slot name="left" v-if="$slots.left" />
         </view>
-        <view :class="`${prefixCls}-content-title`" v-if="title"> {{ title }}</view>
+        <view :class="`${prefixCls}-content-title`" v-if="title">
+          <slot name="title">{{ title }}</slot>
+        </view>
+        <view :class="`${prefixCls}-content-right`">
+          <slot name="right" v-if="$slots.right" />
+        </view>
       </view>
     </view>
   </view>
@@ -167,7 +172,7 @@ const handleBackClick = async () => {
     align-items: center;
     width: 100%;
     height: 48px;
-    padding-right: 100px;
+    // padding-right: 100px;
 
     &-title {
       font-size: 17px;
@@ -191,6 +196,14 @@ const handleBackClick = async () => {
           opacity: 0.7;
         }
       }
+    }
+
+    &-right {
+      width: 100px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 
